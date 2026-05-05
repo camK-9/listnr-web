@@ -1,3 +1,4 @@
+import { AuthProvider } from "@/context/AuthContext";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -5,7 +6,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <body>
         <ThemeRegistry>
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </ThemeRegistry>
       </body>
     </html>

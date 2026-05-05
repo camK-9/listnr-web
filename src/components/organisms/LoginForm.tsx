@@ -8,8 +8,10 @@ import { useRouter } from 'next/navigation';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AppTextField } from '../molecules/AppTextField';
 import { SocialButtons } from '../molecules/SocialButtons';
+import { useAuth } from '@/context/AuthContext';
 
 export const LoginForm = () => {
+    const { login } = useAuth();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -25,8 +27,7 @@ export const LoginForm = () => {
 
         try {
             const data = await authService.login({ email, password });
-            localStorage.setItem('token', data.access_token);
-            router.push('/');
+            login(data.access_token, data.user);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Identifiants invalides');
             setLoading(false);
