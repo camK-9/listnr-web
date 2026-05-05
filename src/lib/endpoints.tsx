@@ -19,7 +19,7 @@ export const endpoints = {
     EXISTS: (id: string) => `/releases/${id}`,
     STATS: (id: string) => `/releases/stats/${id}`,
     NEWS: '/releases/new'
-  }, 
+  },
   REVIEWS: {
     EXISTS: (id: string) => `/reviews/${id}`,
     CREATE: (id: string) => `/reviews/${id}`,

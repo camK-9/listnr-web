@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ['latin'], weight: ['400', '600', '700'] });
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], weight: ['400', '600', '700'] });
 
 const themeOptions: ThemeOptions = {
-palette: {
+  palette: {
     mode: 'dark',
     primary: {
       main: '#7F56D9',
@@ -71,7 +71,7 @@ palette: {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
-          backgroundColor: '#23232E', 
+          backgroundColor: '#23232E',
         },
       },
     },
