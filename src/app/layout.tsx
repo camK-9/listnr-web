@@ -1,5 +1,6 @@
 import { AuthProvider } from "@/context/AuthContext";
 import ThemeRegistry from "@/theme/ThemeRegistry";
+import { Container } from "@mui/material";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,7 +8,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <AuthProvider>
-            {children}
+            <Container maxWidth="lg" sx={{ marginTop: '50px' }}>
+              {children}
+            </Container>
           </AuthProvider>
         </ThemeRegistry>
       </body>

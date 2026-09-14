@@ -10,6 +10,7 @@ const themeOptions: ThemeOptions = {
     mode: 'dark',
     primary: {
       main: '#7F56D9',
+      dark: '#6941C6',
       contrastText: '#ffffff',
     },
     secondary: {
