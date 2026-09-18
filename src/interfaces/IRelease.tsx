@@ -1,14 +1,12 @@
 import IArtist from "./IArtist";
-import IListenHistory from "./IListenHistory";
-import IListenQueue from "./IListenQueue";
-import IReview from "./IReview";
 
 export default interface Release {
   spotifyId: string,
   title: string,
   type: string,
   releaseDate: string,
+  totalTracks: string
   imageUrl?: string,
-  spotifyUrl: string,
-  artistName: string,
+  spotifyUrl?: string,
+  artist: IArtist
 }

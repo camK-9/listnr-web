@@ -17,6 +17,8 @@ export const endpoints = {
   RELEASES: {
     SEARCH: (query: string) => `/releases/search?q=${query}`,
     EXISTS: (id: string) => `/releases/${id}`,
+    TRACKS: (id: string) => `/releases/${id}/tracks`,
+    ALBUM_TRACKS: (id: string) => `/releases/${id}/album/tracks`,
     STATS: (id: string) => `/releases/stats/${id}`,
     NEWS: '/releases/new'
   },

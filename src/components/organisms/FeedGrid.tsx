@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
-import { MediaCard } from '../molecules/MediaCard';
-import IRelease from '@/interfaces/IRelease';
+import IReview from '@/interfaces/IReview';
+import { ReviewCard } from '../molecules/ReviewCard';
 
-export const MediaGrid = ({ title, items }: { title: string, items: IRelease[] }) => {
+export const FeedGrid = ({ title, items }: { title: string, items: IReview[] }) => {
     const displayedItems = items && items.slice(0, 10) || [];
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -16,9 +16,9 @@ export const MediaGrid = ({ title, items }: { title: string, items: IRelease[] }
             if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
                 container.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-                container.scrollBy({ left: 130, behavior: 'smooth' });
+                container.scrollBy({ left: 300, behavior: 'smooth' });
             }
-        }, 3000);
+        }, 5000);
 
         return () => clearInterval(interval);
     }, [isHovered, displayedItems]);
@@ -42,16 +42,16 @@ export const MediaGrid = ({ title, items }: { title: string, items: IRelease[] }
                     '&::-webkit-scrollbar': { display: 'none' },
                 }}
             >
-                {displayedItems.map((item: IRelease) => (
+                {displayedItems.map((item: IReview) => (
                     <Stack
-                        key={item.spotifyId}
+                        key={item.id}
                         sx={{
-                            width: { xs: "130px", sm: "150px", md: "170px" },
-                            minWidth: { xs: "130px", sm: "150px", md: "170px" },
-                            maxWidth: { xs: "130px", sm: "150px", md: "170px" },
+                            width: '300px',
+                            minWidth: '300px',
+                            maxWidth: '300px',
                         }}
                     >
-                        <MediaCard {...item} />
+                        <ReviewCard {...item} />
                     </Stack>
                 ))}
             </Stack>

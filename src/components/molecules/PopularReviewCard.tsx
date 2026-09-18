@@ -1,11 +1,11 @@
 import React from 'react';
-import { Card, CardMedia, CardContent, Typography, IconButton, Stack } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, IconButton, Stack, Rating } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import theme from '@/theme/theme';
-import IRelease from '@/interfaces/IRelease';
+import IReview from '@/interfaces/IReview';
 
-export const MediaCard = (item: IRelease) => {
+export const PopularReviewCard = (item: IReview) => {
     return (
         <Card
             sx={{
@@ -24,8 +24,8 @@ export const MediaCard = (item: IRelease) => {
             <Stack sx={{ position: 'relative', pt: '100%' }}>
                 <CardMedia
                     component="img"
-                    image={item.imageUrl}
-                    alt={item.title}
+                    image={item.release.imageUrl}
+                    alt={item.release.title}
                     sx={{
                         position: 'absolute',
                         top: 0,
@@ -40,7 +40,7 @@ export const MediaCard = (item: IRelease) => {
                     className="play-button"
                     onClick={(e) => {
                         e.stopPropagation();
-                        window.open(item.spotifyUrl, '_blank', 'noopener,noreferrer');
+                        window.open(item.release.spotifyUrl, '_blank', 'noopener,noreferrer');
                     }}
                     sx={{
                         position: 'absolute',
@@ -59,13 +59,18 @@ export const MediaCard = (item: IRelease) => {
             </Stack>
 
             <CardContent>
-                <Stack>
+                <Stack spacing={1}>
                     <Typography variant="caption" noWrap sx={{ fontWeight: 'bold' }}>
-                        {item.title}
+                        {item.user.username}
                     </Typography>
-                    <Typography variant="caption" noWrap>
-                        {item.artistName}
-                    </Typography>
+
+                    <Rating
+                        readOnly
+                        defaultValue={item.rating}
+                        precision={0.5}
+                        size="small"
+                        sx={{ color: theme.palette.primary.main }}
+                    />
                 </Stack>
             </CardContent>
         </Card>
