@@ -8,7 +8,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <AuthProvider>
-            <Container maxWidth="lg" sx={{ marginTop: '50px' }}>
+            <Container maxWidth="lg" sx={{ marginTop: '50px', marginBottom: '50px' }}>
               {children}
             </Container>
           </AuthProvider>

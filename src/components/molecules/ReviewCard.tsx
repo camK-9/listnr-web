@@ -3,7 +3,6 @@ import { Divider, Rating, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faComment, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
 import IReview from '@/interfaces/IReview';
-import theme from '@/theme/theme';
 import Image from 'next/image';
 
 export const ReviewCard = (item: IReview) => {
@@ -14,14 +13,14 @@ export const ReviewCard = (item: IReview) => {
                 position: 'relative',
                 cursor: 'pointer',
                 padding: '20px',
-                background: theme.palette.background.paper,
+                bgcolor: 'background.paper',
                 borderRadius: '15px'
             }}
         >
             <Stack spacing={1} direction="row" alignItems="center">
-                <FontAwesomeIcon icon={faCircleUser} color={theme.palette.text.secondary} />
+                <FontAwesomeIcon icon={faCircleUser} color="text.secondary" />
 
-                <Typography variant='caption' color={theme.palette.text.secondary}>
+                <Typography variant='caption' color="text.secondary">
                     {item.user.username}
                 </Typography>
             </Stack>
@@ -31,7 +30,7 @@ export const ReviewCard = (item: IReview) => {
                     {item.release.title} - {item.release.artist.name}
                 </Typography>
 
-                <Typography variant='caption' color={theme.palette.text.secondary}>
+                <Typography variant='caption' color="text.secondary">
                     {item.release.releaseDate.slice(0, 4)}
                 </Typography>
             </Stack>
@@ -41,7 +40,7 @@ export const ReviewCard = (item: IReview) => {
                 defaultValue={item.rating}
                 precision={0.5}
                 size="small"
-                sx={{ color: theme.palette.primary.main }}
+                sx={{ color: 'primary.main' }}
             />
 
             <Stack spacing={1} direction="row">
@@ -72,10 +71,10 @@ export const ReviewCard = (item: IReview) => {
                     direction="row"
                     alignItems="center"
                     sx={{
-                        color: theme.palette.text.secondary,
+                        color: 'text.secondary',
                         transition: 'transform 0.2s ease, background-color 0.2s ease',
                         '&:hover': {
-                            color: theme.palette.action.hover,
+                            color: 'action.hover',
                             transform: 'translateY(-4px)',
                         }
                     }}
@@ -92,10 +91,10 @@ export const ReviewCard = (item: IReview) => {
                     direction="row"
                     alignItems="center"
                     sx={{
-                        color: theme.palette.text.secondary,
+                        color: 'text.secondary',
                         transition: 'transform 0.2s ease, background-color 0.2s ease',
                         '&:hover': {
-                            color: theme.palette.secondary.main,
+                            color: 'secondary.main',
                             transform: 'translateY(-4px)',
                         }
                     }}
@@ -112,10 +111,10 @@ export const ReviewCard = (item: IReview) => {
                     direction="row"
                     alignItems="center"
                     sx={{
-                        color: theme.palette.text.secondary,
+                        color: 'text.secondary',
                         transition: 'transform 0.2s ease, background-color 0.2s ease',
                         '&:hover': {
-                            color: theme.palette.text.primary,
+                            color: 'text.primary',
                             transform: 'translateY(-4px)',
                         }
                     }}

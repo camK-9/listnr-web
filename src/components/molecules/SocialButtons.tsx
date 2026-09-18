@@ -1,7 +1,6 @@
 import { Stack, Link, Divider, Typography } from '@mui/material';
 import { LoadingButton } from '../atoms/LoadingButton';
 import { faSpotify, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import theme from '@/theme/theme';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface SocialLoginButtonsProps {
@@ -16,7 +15,7 @@ export const SocialButtons = ({ mode }: SocialLoginButtonsProps) => {
     return (
         <Stack spacing={2}>
             <Divider>
-                <Typography variant="body1" color={theme.palette.text.secondary}>
+                <Typography variant="body1" color="text.secondary">
                     OU
                 </Typography>
             </Divider>
@@ -27,8 +26,8 @@ export const SocialButtons = ({ mode }: SocialLoginButtonsProps) => {
                 startIcon={<FontAwesomeIcon icon={faGoogle} />}
                 onClick={() => handleSocialLogin('google')}
                 sx={{
-                    background: theme.palette.action.hover,
-                    color: theme.palette.background.default,
+                    bgcolor: 'action.hover',
+                    color: 'background.default',
                 }}
             >
                 {mode == "login" ? "Se connecter" : "S'inscrire"} avec Google
@@ -40,8 +39,8 @@ export const SocialButtons = ({ mode }: SocialLoginButtonsProps) => {
                 startIcon={<FontAwesomeIcon icon={faSpotify} />}
                 onClick={() => handleSocialLogin('spotify')}
                 sx={{
-                    background: theme.palette.success.main,
-                    color: theme.palette.background.default,
+                    bgcolor: 'success.main',
+                    color: 'background.default',
                 }}
             >
                 {mode == "login" ? "Se connecter" : "S'inscrire"} avec Spotify

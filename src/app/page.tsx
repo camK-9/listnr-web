@@ -6,16 +6,14 @@ import { releaseService } from '@/lib/releaseService';
 import { useState, useEffect } from 'react';
 import IRelease from '@/interfaces/IRelease';
 import IReview from '@/interfaces/IReview'
-import theme from '@/theme/theme';
 import { reviewService } from '@/lib/reviewService';
 import { PopularReviewGrid } from '@/components/organisms/PopularReviewGrid';
 import { FeedGrid } from '@/components/organisms/FeedGrid';
 import { feedService } from '@/lib/feedService';
 import { libraryService } from '@/lib/libraryService';
 import IListenQueue from '@/interfaces/IListenQueue';
-import { QueueGrid } from '@/components/organisms/QueueGrid';
-import ListenQueue from '@/interfaces/IListenQueue';
 import IListenHistory from '@/interfaces/IListenHistory';
+import { QueueGrid } from '@/components/organisms/QueueGrid';
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -85,7 +83,7 @@ export default function HomePage() {
       )}
 
       {loading ? <Stack>
-        <CircularProgress sx={{ color: theme.palette.primary.main }} />
+        <CircularProgress sx={{ color: 'primary.main' }} />
       </Stack> : <Stack spacing={4}>
         <ReleaseGrid
           title="Sorties récentes"

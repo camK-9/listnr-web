@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardMedia, CardContent, Typography, IconButton, Stack, Rating } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import theme from '@/theme/theme';
 import IReview from '@/interfaces/IReview';
 
 export const PopularReviewCard = (item: IReview) => {
@@ -11,11 +10,11 @@ export const PopularReviewCard = (item: IReview) => {
             sx={{
                 position: 'relative',
                 cursor: 'pointer',
-                background: theme.palette.background.paper,
+                bgcolor: 'background.paper',
                 borderRadius: '15px',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
-                    background: theme.palette.text.disabled,
+                    bgcolor: 'text.disabled',
                     transform: 'translateY(-4px)',
                     '& .play-button': { opacity: 1, transform: 'translateY(0)' },
                 },
@@ -46,12 +45,12 @@ export const PopularReviewCard = (item: IReview) => {
                         position: 'absolute',
                         bottom: 8,
                         right: 8,
-                        background: theme.palette.primary.main,
-                        color: theme.palette.text.primary,
+                        bgcolor: 'primary.main',
+                        color: 'text.primary',
                         opacity: 0,
                         transform: 'translateY(8px)',
                         transition: 'all 0.2s ease',
-                        '&:hover': { bgcolor: theme.palette.primary.dark, transform: 'scale(1.05)' },
+                        '&:hover': { bgcolor: 'primary.dark', transform: 'scale(1.05)' },
                     }}
                 >
                     <FontAwesomeIcon icon={faPlay} style={{ fontSize: '10px' }} />
@@ -69,7 +68,7 @@ export const PopularReviewCard = (item: IReview) => {
                         defaultValue={item.rating}
                         precision={0.5}
                         size="small"
-                        sx={{ color: theme.palette.primary.main }}
+                        sx={{ color: 'primary.main' }}
                     />
                 </Stack>
             </CardContent>

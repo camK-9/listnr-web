@@ -1,7 +1,6 @@
 import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardActions } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import theme from '@/theme/theme';
 import { LoadingButton } from '../atoms/LoadingButton';
 import IListenQueue from '@/interfaces/IListenQueue';
 import IListenHistory from '@/interfaces/IListenHistory';
@@ -40,7 +39,7 @@ export const QueueCard = ({ item, queue, history, onToggleQueue, onToggleHistory
             sx={{
                 position: 'relative',
                 cursor: 'pointer',
-                background: theme.palette.background.paper,
+                bgcolor: 'background.paper',
                 borderRadius: '15px',
                 '&:hover': {
                     '& .play-button': { opacity: 1, transform: 'translateY(0)' },
@@ -72,12 +71,12 @@ export const QueueCard = ({ item, queue, history, onToggleQueue, onToggleHistory
                         position: 'absolute',
                         bottom: 8,
                         right: 8,
-                        background: theme.palette.primary.main,
-                        color: theme.palette.text.primary,
+                        bgcolor: 'primary.main',
+                        color: 'text.primary',
                         opacity: 0,
                         transform: 'translateY(8px)',
                         transition: 'all 0.2s ease',
-                        '&:hover': { bgcolor: theme.palette.primary.dark, transform: 'scale(1.05)' },
+                        '&:hover': { bgcolor: 'primary.dark', transform: 'scale(1.05)' },
                     }}
                 >
                     <FontAwesomeIcon icon={faPlay} style={{ fontSize: '10px' }} />

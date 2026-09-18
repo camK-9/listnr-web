@@ -4,6 +4,7 @@ import IListenQueue from '@/interfaces/IListenQueue';
 import IListenHistory from '@/interfaces/IListenHistory';
 import IRelease from '@/interfaces/IRelease';
 import { QueueCard } from '../molecules/QueueCard';
+import { EmptyRadar } from '../molecules/EmptyRadar';
 
 export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggleHistory }:
     {
@@ -50,7 +51,7 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
                 {title}
             </Typography>
 
-            <Stack
+            {displayQueue.length > 0 ? <Stack
                 direction="row"
                 gap={2}
                 ref={scrollRef}
@@ -81,7 +82,9 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
                         />
                     </Stack>
                 ))}
-            </Stack>
+            </Stack> :
+                <EmptyRadar />
+            }
         </Stack>
     );
 };
