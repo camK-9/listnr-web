@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         const loadUser = () => {
-            const token = localStorage.getItem('token');
+            const token = Cookies.get('token');
             const savedUser = localStorage.getItem('user');
 
             if (token && savedUser) {
@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, []);
 
     const login = (token: string, userData: IUser) => {
+        console.log(userData, 'user')
         Cookies.set('token', token, { expires: 7 })
         localStorage.setItem('user', JSON.stringify(userData));
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;

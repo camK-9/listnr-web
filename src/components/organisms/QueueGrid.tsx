@@ -38,7 +38,7 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
             if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
                 container.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-                container.scrollBy({ left: 130, behavior: 'smooth' });
+                container.scrollBy({ left: 170, behavior: 'smooth' });
             }
         }, 5000);
 
@@ -68,9 +68,9 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
                     <Stack
                         key={item.releaseId}
                         sx={{
-                            width: { xs: "130px", sm: "150px", md: "170px" },
-                            minWidth: { xs: "130px", sm: "150px", md: "170px" },
-                            maxWidth: { xs: "130px", sm: "150px", md: "170px" },
+                            width: "170px",
+                            minWidth: "170px",
+                            maxWidth: "170px"
                         }}
                     >
                         <QueueCard

@@ -1,3 +1,4 @@
+import { Navigation } from "@/components/organisms/Navigation";
 import { AuthProvider } from "@/context/AuthContext";
 import ThemeRegistry from "@/theme/ThemeRegistry";
 import { Container } from "@mui/material";
@@ -8,7 +9,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <ThemeRegistry>
           <AuthProvider>
-            <Container maxWidth="lg" sx={{ marginTop: '50px', marginBottom: '50px' }}>
+            <Navigation />
+            <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '80px' }}>
               {children}
             </Container>
           </AuthProvider>

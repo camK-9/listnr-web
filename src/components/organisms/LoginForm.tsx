@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { Alert, Stack, Link } from '@mui/material';
 import { authService } from '@/lib/authService';
 import { LoadingButton } from '../atoms/LoadingButton';
-import { useRouter } from 'next/navigation';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AppTextField } from '../molecules/AppTextField';
 import { SocialButtons } from '../molecules/SocialButtons';
@@ -12,7 +11,6 @@ import { useAuth } from '@/context/AuthContext';
 
 export const LoginForm = () => {
     const { login } = useAuth();
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
