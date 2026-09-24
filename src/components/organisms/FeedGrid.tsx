@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import IReview from '@/interfaces/IReview';
 import { ReviewCard } from '../molecules/ReviewCard';
+import { useRouter } from 'next/navigation';
 
 export const FeedGrid = ({ title, items }: { title: string, items: IReview[] }) => {
+    const router = useRouter();
+
     const displayedItems = items && items.slice(0, 10) || [];
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
@@ -25,9 +28,15 @@ export const FeedGrid = ({ title, items }: { title: string, items: IReview[] }) 
 
     return (
         <Stack spacing={2}>
-            <Typography variant="body1" borderBottom="1px solid">
-                {title}
-            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" borderBottom="1px solid">
+                <Typography variant="body1">
+                    {title}
+                </Typography>
+
+                <Button variant="text" onClick={() => router.push('/feed')} sx={{ color: "text.secondary" }}>
+                    voir tout
+                </Button>
+            </Stack>
 
             <Stack
                 direction="row"

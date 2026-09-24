@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Rating, Stack, Typography } from '@mui/material';
+import { Avatar, Divider, Rating, Stack, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser, faComment, faHeart, faShare } from '@fortawesome/free-solid-svg-icons';
 import IReview from '@/interfaces/IReview';
@@ -18,7 +18,13 @@ export const ReviewCard = (item: IReview) => {
             }}
         >
             <Stack spacing={1} direction="row" alignItems="center">
-                <FontAwesomeIcon icon={faCircleUser} color="text.secondary" />
+                <Avatar
+                    src={item.user.avatarUrl}
+                    alt={item.user.username}
+                    sx={{ width: 30, height: 30, fontWeight: 600 }}
+                >
+                    {item.user.username?.charAt(0).toUpperCase()}
+                </Avatar>
 
                 <Typography variant='caption' color="text.secondary">
                     {item.user.username}

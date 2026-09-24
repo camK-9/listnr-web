@@ -1,15 +1,17 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import api from '@/lib/axios';
 import IUser from '@/interfaces/IUser';
+import { userService } from '@/lib/userService';
 
 interface AuthContextType {
     user: IUser | null;
-    login: (token: string, userData: IUser) => void;
+    login: (token: string) => Promise<void>;
     logout: () => void;
+    refreshUser: () => Promise<void>;
     isLoading: boolean;
 }
 
@@ -20,40 +22,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
-    useEffect(() => {
-        const loadUser = () => {
-            const token = Cookies.get('token');
-            const savedUser = localStorage.getItem('user');
+    const fetchUser = useCallback(async () => {
+        try {
+            const { data } = await userService.getProfile();
+            setUser(data);
+        } catch (error) {
+            console.error('Erreur lors du chargement du profil:', error);
+            logout();
+        }
+    }, []);
 
-            if (token && savedUser) {
-                setUser(JSON.parse(savedUser));
+    useEffect(() => {
+        const initAuth = async () => {
+            const token = Cookies.get('token');
+
+            if (token) {
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                await fetchUser();
             }
             setIsLoading(false);
         };
 
-        loadUser();
-    }, []);
+        initAuth();
+    }, [fetchUser]);
 
-    const login = (token: string, userData: IUser) => {
-        console.log(userData, 'user')
-        Cookies.set('token', token, { expires: 7 })
-        localStorage.setItem('user', JSON.stringify(userData));
+    const login = async (token: string) => {
+        Cookies.set('token', token, { expires: 7 });
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        setUser(userData);
+        await fetchUser();
         router.push('/');
     };
 
     const logout = () => {
         Cookies.remove('token');
-        localStorage.removeItem('user');
         delete api.defaults.headers.common['Authorization'];
         setUser(null);
         router.push('/login');
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+        <AuthContext.Provider value={{ user, login, logout, refreshUser: fetchUser, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

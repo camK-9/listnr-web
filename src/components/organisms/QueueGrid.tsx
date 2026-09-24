@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import IListenQueue from '@/interfaces/IListenQueue';
 import IListenHistory from '@/interfaces/IListenHistory';
 import IRelease from '@/interfaces/IRelease';
 import { QueueCard } from '../molecules/QueueCard';
 import { EmptyRadar } from '../molecules/EmptyRadar';
+import { useRouter } from 'next/navigation';
 
 export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggleHistory }:
     {
@@ -15,6 +16,8 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
+    const router = useRouter();
+
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
 
@@ -47,9 +50,15 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
 
     return (
         <Stack spacing={2}>
-            <Typography variant="body1" borderBottom="1px solid">
-                {title}
-            </Typography>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" borderBottom="1px solid">
+                <Typography variant="body1">
+                    {title}
+                </Typography>
+
+                <Button variant="text" onClick={() => router.push('/queue')} sx={{ color: "text.secondary" }}>
+                    voir tout
+                </Button>
+            </Stack>
 
             {displayQueue.length > 0 ? <Stack
                 direction="row"

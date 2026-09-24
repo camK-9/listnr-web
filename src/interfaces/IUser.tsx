@@ -26,4 +26,11 @@ export default interface User {
     commentLikes: ICommentLike[],
     notifications: INotification[],
     actionsPerformed: INotification[]
+    stats?: {
+        artistsFollowedCount: number
+        followersCount: number
+        followingCount: number
+        releasesListened: number
+        reviewsCount: number
+    }
 }

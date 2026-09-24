@@ -8,11 +8,14 @@ export const endpoints = {
     USER_PROFILE: (id: string) => `/users/profile/${id}`,
     FOLLOW: (id: string) => `/users/follow/${id}`,
     SEARCH: (query: string) => `/users/search?q=${query}`,
+    POPULAR: '/users/popular',
   },
   ARTISTS: {
     SEARCH: (query: string) => `/artists/search?q=${query}`,
+    PROFILE: (id: string) => `/artists/profile/${id}`,
     EXISTS: (id: string) => `/artists/${id}`,
     FOLLOW: (id: string) => `/artists/follow/${id}`,
+    POPULAR: '/artists/popular',
   },
   RELEASES: {
     SEARCH: (query: string) => `/releases/search?q=${query}`,
