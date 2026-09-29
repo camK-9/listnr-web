@@ -2,15 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { ReleaseCard } from '../molecules/ReleaseCard';
 import IRelease from '@/interfaces/IRelease';
-import IListenHistory from '@/interfaces/IListenHistory';
-import IListenQueue from '@/interfaces/IListenQueue';
+import ILibrary from '@/interfaces/ILibrary';
 
-export const ReleaseGrid = ({ title, items, queue, history, onToggleQueue, onToggleHistory }:
+export const ReleaseGrid = ({ title, items, onToggleQueue, onToggleHistory }:
     {
         title: string,
         items: IRelease[],
-        queue: IListenQueue[],
-        history: IListenHistory[],
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
@@ -62,8 +59,6 @@ export const ReleaseGrid = ({ title, items, queue, history, onToggleQueue, onTog
                     >
                         <ReleaseCard
                             item={item}
-                            queue={queue}
-                            history={history}
                             onToggleQueue={onToggleQueue}
                             onToggleHistory={onToggleHistory}
                         />

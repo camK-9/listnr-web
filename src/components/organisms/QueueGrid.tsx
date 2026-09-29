@@ -1,18 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Button, Stack, Typography } from '@mui/material';
-import IListenQueue from '@/interfaces/IListenQueue';
-import IListenHistory from '@/interfaces/IListenHistory';
+import ILibrary from '@/interfaces/ILibrary';
 import IRelease from '@/interfaces/IRelease';
 import { QueueCard } from '../molecules/QueueCard';
-import { EmptyRadar } from '../molecules/EmptyRadar';
+import { EmptyQueue } from '../molecules/EmptyQueue';
 import { useRouter } from 'next/navigation';
 
-export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggleHistory }:
+export const QueueGrid = ({ title, items, onToggleQueue, onToggleHistory }:
     {
         title: string,
-        items: IListenQueue[],
-        queue: IListenQueue[],
-        history: IListenHistory[],
+        items: ILibrary[],
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
@@ -20,18 +17,6 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
 
     const scrollRef = useRef<HTMLDivElement>(null);
     const [isHovered, setIsHovered] = useState(false);
-
-    const displayQueue = queue.reduce<IListenQueue[]>((acc, current) => {
-        const alreadyInDisplay = acc.some(
-            (item) => item.release?.spotifyUrl === current.release?.spotifyUrl
-        );
-
-        if (!alreadyInDisplay) {
-            acc.push(current);
-        }
-
-        return acc;
-    }, []);
 
     useEffect(() => {
         const container = scrollRef.current;
@@ -48,6 +33,20 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
         return () => clearInterval(interval);
     }, [isHovered, items]);
 
+    const displayQueue = items.reduce<ILibrary[]>((acc, current) => {
+        const albumId = current.release.albumId || current.release.spotifyId;
+
+        const alreadyInDisplay = acc.some(
+            (item) => (item.release.albumId || item.release.spotifyId) === albumId
+        );
+
+        if (!alreadyInDisplay) {
+            acc.push(current);
+        }
+
+        return acc;
+    }, []);
+
     return (
         <Stack spacing={2}>
             <Stack direction="row" alignItems="center" justifyContent="space-between" borderBottom="1px solid">
@@ -55,7 +54,7 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
                     {title}
                 </Typography>
 
-                <Button variant="text" onClick={() => router.push('/queue')} sx={{ color: "text.secondary" }}>
+                <Button variant="text" onClick={() => router.push('/library')} sx={{ color: "text.secondary" }}>
                     voir tout
                 </Button>
             </Stack>
@@ -73,7 +72,7 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
                     '&::-webkit-scrollbar': { display: 'none' },
                 }}
             >
-                {displayQueue.map((item: IListenQueue) => (
+                {displayQueue.map((item: ILibrary) => (
                     <Stack
                         key={item.releaseId}
                         sx={{
@@ -84,15 +83,14 @@ export const QueueGrid = ({ title, items, queue, history, onToggleQueue, onToggl
                     >
                         <QueueCard
                             item={item}
-                            queue={queue}
-                            history={history}
+                            queue={items}
                             onToggleQueue={onToggleQueue}
                             onToggleHistory={onToggleHistory}
                         />
                     </Stack>
                 ))}
             </Stack> :
-                <EmptyRadar />
+                <EmptyQueue />
             }
         </Stack>
     );

@@ -1,13 +1,12 @@
 'use client';
 
-import { Paper, Typography, Button, Stack, Box } from '@mui/material';
+import { Typography, Stack } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass, faRadio } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-import theme from '@/theme/theme';
 import { LoadingButton } from '../atoms/LoadingButton';
 
-export const EmptyRadar = () => {
+export const EmptyQueue = () => {
     const router = useRouter();
 
     return (
@@ -41,7 +40,7 @@ export const EmptyRadar = () => {
                 Rien sur le radar !
             </Typography>
 
-            <Typography variant="body2" color="text.secondary" sx={{ maxWidth: '400px' }}>
+            <Typography variant="body2" color="text.secondary" maxWidth="400px">
                 Tu es totalement à jour. Explore les sorties récentes pour ajouter de nouveaux projets à ta file d'attente.
             </Typography>
 

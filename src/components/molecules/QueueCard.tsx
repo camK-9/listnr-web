@@ -2,37 +2,20 @@ import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { LoadingButton } from '../atoms/LoadingButton';
-import IListenQueue from '@/interfaces/IListenQueue';
-import IListenHistory from '@/interfaces/IListenHistory';
+import ILibrary from '@/interfaces/ILibrary';
 import IRelease from '@/interfaces/IRelease';
 
-export const QueueCard = ({ item, queue, history, onToggleQueue, onToggleHistory }:
+export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
     {
-        item: IListenQueue,
-        queue: IListenQueue[],
-        history: IListenHistory[],
+        item: ILibrary,
+        queue: ILibrary[],
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
 
-    const remainingAlbumTracks = queue.filter((q) => {
-        if (item.release?.spotifyUrl && q.release?.spotifyUrl) {
-            return q.release?.spotifyUrl === item.release?.spotifyUrl;
-        }
-
-        return (
-            q.release?.imageUrl === item.release?.imageUrl &&
-            q.release.artist?.name === item.release.artist?.name
-        );
-    }).length;
-
-    const handlePass = async () => {
-        onToggleQueue(item.release);
-    };
-
-    const handleListened = async () => {
-        onToggleHistory(item.release);
-    };
+    const remainingAlbumTracks = queue.filter(
+        (q) => (q.release.albumId || q.release.spotifyId) === (item.release.albumId || item.release.spotifyId)
+    ).length;
 
     return (
         <Card
@@ -86,7 +69,7 @@ export const QueueCard = ({ item, queue, history, onToggleQueue, onToggleHistory
             <CardContent>
                 <Stack>
                     <Stack spacing={1} direction="row" alignItems="center">
-                        <Typography variant='caption' noWrap sx={{ fontWeight: 'bold' }}>
+                        <Typography variant='caption' noWrap fontWeight="bold">
                             {item.release.title}
                         </Typography>
 
@@ -103,7 +86,7 @@ export const QueueCard = ({ item, queue, history, onToggleQueue, onToggleHistory
             <CardActions>
                 <LoadingButton
                     variant='contained'
-                    onClick={handleListened}
+                    onClick={() => onToggleHistory(item.release)}
                     sx={{
                         borderRadius: '15px'
                     }}
@@ -113,7 +96,7 @@ export const QueueCard = ({ item, queue, history, onToggleQueue, onToggleHistory
 
                 <LoadingButton
                     variant='outlined'
-                    onClick={handlePass}
+                    onClick={() => onToggleQueue(item.release)}
                     sx={{
                         borderRadius: '15px',
                         whiteSpace: 'noWrap'

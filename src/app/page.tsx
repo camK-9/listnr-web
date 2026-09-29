@@ -11,8 +11,7 @@ import { PopularReviewGrid } from '@/components/organisms/PopularReviewGrid';
 import { FeedGrid } from '@/components/organisms/FeedGrid';
 import { feedService } from '@/lib/feedService';
 import { libraryService } from '@/lib/libraryService';
-import IListenQueue from '@/interfaces/IListenQueue';
-import IListenHistory from '@/interfaces/IListenHistory';
+import ILibrary from '@/interfaces/ILibrary';
 import { QueueGrid } from '@/components/organisms/QueueGrid';
 
 export default function HomePage() {
@@ -21,25 +20,22 @@ export default function HomePage() {
   const [newReleases, setNewReleases] = useState<IRelease[]>([]);
   const [popularReviews, setPopularReviews] = useState<IReview[]>([]);
   const [feed, setFeed] = useState<IReview[]>([]);
-  const [queue, setQueue] = useState<IListenQueue[]>([]);
-  const [history, setHistory] = useState<IListenHistory[]>([]);
+  const [queue, setQueue] = useState<ILibrary[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [releasesData, reviewsData, feedData, queueData, historyData] = await Promise.all([
+        const [releasesData, reviewsData, feedData, queueData] = await Promise.all([
           releaseService.getNewReleases(),
           reviewService.getPopularReviews(),
           feedService.getFeedService(),
-          libraryService.getQueue(),
-          libraryService.getHistory(),
+          libraryService.getQueue(1, 50),
         ]);
 
         setNewReleases(releasesData)
         setPopularReviews(reviewsData)
         setFeed(feedData)
-        setQueue(queueData)
-        setHistory(historyData)
+        setQueue(queueData.data)
       } catch (err: any) {
         setError(
           err.response?.data?.message || 'Impossible de charger les sorties récentes'
@@ -56,7 +52,11 @@ export default function HomePage() {
     try {
       const result = await libraryService.toggleQueue(releaseItem.spotifyId);
 
-      setQueue(result);
+      setQueue(result.data);
+
+      const updatedReleases = await releaseService.getNewReleases()
+
+      setNewReleases(updatedReleases)
     } catch (err) {
       console.error('Erreur lors de la mise à jour de la queue', err);
     }
@@ -64,11 +64,15 @@ export default function HomePage() {
 
   const handleToggleHistory = async (releaseItem: IRelease) => {
     try {
-      const updatedHistory = await libraryService.toggleHistory(releaseItem.spotifyId);
-      setHistory(updatedHistory);
+      await libraryService.toggleHistory(releaseItem.spotifyId);
 
-      const updatedQueue = await libraryService.getQueue();
-      setQueue(updatedQueue);
+      const [updatedReleases, updatedQueue] = await Promise.all([
+        releaseService.getNewReleases(),
+        libraryService.getQueue(1, 50),
+      ]);
+
+      setNewReleases(updatedReleases);
+      setQueue(updatedQueue.data);
     } catch (err) {
       console.error("Erreur lors de la mise à jour de l'historique :", err);
     }
@@ -88,8 +92,6 @@ export default function HomePage() {
         <ReleaseGrid
           title="Sorties récentes"
           items={newReleases}
-          queue={queue}
-          history={history}
           onToggleQueue={handleToggleQueue}
           onToggleHistory={handleToggleHistory}
         />
@@ -107,8 +109,6 @@ export default function HomePage() {
         <QueueGrid
           title="Dans ton radar"
           items={queue}
-          queue={queue}
-          history={history}
           onToggleQueue={handleToggleQueue}
           onToggleHistory={handleToggleHistory}
         />

@@ -78,13 +78,15 @@ export const PopularArtists = (item: IArtist) => {
                             '&:hover': {
                                 color: isFollowing ? 'error.main' : 'primary.main',
                             }
-                        }}>
+                        }}
+                    >
                         <FontAwesomeIcon
                             icon={isFollowing ? faUserMinus : faUserPlus}
                             style={{
                                 width: '20px',
                                 height: '20px'
-                            }} />
+                            }}
+                        />
                     </IconButton>
                 </Tooltip>
             </Stack>}

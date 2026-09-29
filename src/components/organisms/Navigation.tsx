@@ -29,14 +29,14 @@ export const Navigation = () => {
 
     const DESKTOP_NAV_ITEMS = [
         { label: 'Social feed', path: '/feed', icon: faFeather },
-        { label: 'À écouter', path: '/queue', icon: faHeadphones },
+        { label: 'À écouter', path: '/library', icon: faHeadphones },
         { label: user?.username || 'Profil', path: '/profile', icon: faUser },
     ];
 
     const MOBILE_NAV_ITEMS = [
         { label: 'Accueil', path: '/', icon: faHouse },
         { label: 'Social feed', path: '/feed', icon: faFeather },
-        { label: 'À écouter', path: '/queue', icon: faHeadphones },
+        { label: 'À écouter', path: '/library', icon: faHeadphones },
         { label: 'Recherche', path: '/search', icon: faMagnifyingGlass },
         { label: user?.username || 'Profil', path: '/profile', icon: faUser },
     ];

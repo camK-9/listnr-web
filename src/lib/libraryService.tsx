@@ -2,13 +2,17 @@ import api from '@/lib/axios';
 import { endpoints } from './endpoints';
 
 export const libraryService = {
-    getQueue: async () => {
-        const response = await api.get(endpoints.LIBRARY.QUEUE);
+    getQueue: async (page = 1, limit = 50) => {
+        const response = await api.get(endpoints.LIBRARY.QUEUE, {
+            params: { page, limit },
+        });
         return response.data;
     },
 
-    getHistory: async () => {
-        const response = await api.get(endpoints.LIBRARY.HISTORY);
+    getHistory: async (page = 1, limit = 50) => {
+        const response = await api.get(endpoints.LIBRARY.HISTORY, {
+            params: { page, limit },
+        });
         return response.data;
     },
 

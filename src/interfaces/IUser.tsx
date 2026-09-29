@@ -3,8 +3,7 @@ import ICommentLike from "./ICommentLike";
 import IFollowArtist from "./IFollowArtist";
 import IFollowUser from "./IFollowUser";
 import ILike from "./ILike";
-import IListenHistory from "./IListenHistory";
-import IListenQueue from "./IListenQueue";
+import ILibrary from "./ILibrary";
 import INotification from "./INotification";
 import IReview from "./IReview";
 
@@ -19,8 +18,8 @@ export default interface User {
     followedArtists: IFollowArtist[],
     followers: IFollowUser[],
     following: IFollowUser[],
-    queue: IListenQueue[],
-    history: IListenHistory[],
+    queue: ILibrary[],
+    history: ILibrary[],
     likes: ILike[],
     comments: IComment[],
     commentLikes: ICommentLike[],

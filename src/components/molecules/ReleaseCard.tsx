@@ -3,33 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import IRelease from '@/interfaces/IRelease';
 import { LoadingButton } from '../atoms/LoadingButton';
-import IListenHistory from '@/interfaces/IListenHistory';
-import IListenQueue from '@/interfaces/IListenQueue';
+import ILibrary from '@/interfaces/ILibrary';
 
-export const ReleaseCard = ({ item, queue, history, onToggleQueue, onToggleHistory }:
+export const ReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
     {
         item: IRelease,
-        queue: IListenQueue[],
-        history: IListenHistory[],
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
-
-    const isInQueue = queue.some((q) => {
-        const isDirectMatch = q.release.spotifyId === item.spotifyId;
-
-        const isTrackOfAlbum = q.release.spotifyUrl?.includes(item.spotifyId);
-
-        return Boolean(isDirectMatch || isTrackOfAlbum);
-    });
-
-    const isInHistory = history.some((h) => {
-        const isDirectMatch = h.release.spotifyId === item.spotifyId;
-
-        const isTrackOfAlbum = h.release.spotifyUrl?.includes(item.spotifyId);
-
-        return Boolean(isDirectMatch || isTrackOfAlbum);
-    });
 
     return (
         <Card
@@ -99,10 +80,10 @@ export const ReleaseCard = ({ item, queue, history, onToggleQueue, onToggleHisto
                         borderRadius: '15px'
                     }}
                 >
-                    {isInHistory ? "Pas écouté" : "Écouté"}
+                    {item.isInHistory ? "Pas écouté" : "Écouté"}
                 </LoadingButton>
 
-                {!isInHistory && <LoadingButton
+                {!item.isInHistory && <LoadingButton
                     variant='outlined'
                     onClick={() => onToggleQueue(item)}
                     sx={{
@@ -110,7 +91,7 @@ export const ReleaseCard = ({ item, queue, history, onToggleQueue, onToggleHisto
                         whiteSpace: 'noWrap'
                     }}
                 >
-                    {isInQueue ? "Retirer" : "Plus tard"}
+                    {item.isInQueue ? "Retirer" : "Plus tard"}
                 </LoadingButton>}
             </CardActions>
         </Card>

@@ -8,5 +8,9 @@ export default interface Release {
   totalTracks: string
   imageUrl?: string,
   spotifyUrl?: string,
+  albumId?: string,
+  album?: Release
   artist: IArtist
+  isInQueue?: boolean
+  isInHistory?: boolean
 }

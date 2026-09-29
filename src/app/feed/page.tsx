@@ -53,7 +53,7 @@ export default function FeedPage() {
             )}
             {loading ? <Stack>
                 <CircularProgress sx={{ color: 'primary.main' }} />
-            </Stack> : <Stack spacing={4} direction="row" justifyContent="space-between" sx={{ width: '100%' }}>
+            </Stack> : <Stack spacing={8} direction="row" justifyContent="space-between">
                 <Stack spacing={4} width="100%" maxWidth="600px">
                     <Stack justifyContent="center" height="30px">
                         <Typography variant="h2">
@@ -88,7 +88,7 @@ export default function FeedPage() {
                         ))}
                     </Stack>
 
-                    <Stack spacing={4} sx={{ display: isMobile ? 'none' : 'flex', flex: '0 1 350px', minWidth: '275px' }}>
+                    <Stack spacing={4} sx={{ display: isMobile ? 'none' : 'flex' }}>
                         <Stack justifyContent="center" height="30px">
                             <Typography variant="body2">
                                 Artistes populaire
