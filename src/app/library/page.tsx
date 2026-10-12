@@ -96,7 +96,7 @@ export default function LibraryPage() {
             <Stack spacing={4} maxWidth="600px" minWidth="350px" width="100%">
                 <Tabs
                     value={tab}
-                    onChange={(event: React.SyntheticEvent, newTab: number) => setTab(newTab)}
+                    onChange={(_, newTab: number) => setTab(newTab)}
                     sx={{ height: '50px' }}
                 >
                     <Tab label="À écouter" />

@@ -9,7 +9,7 @@ export default interface Artist {
     imageUrl?: string,
     releases: IRelease[],
     followers: IFollowArtist[]
-    stats: {
+    stats?: {
         followersCount: number,
         releasesCount: number
     },

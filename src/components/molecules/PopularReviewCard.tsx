@@ -14,7 +14,6 @@ export const PopularReviewCard = (item: IReview) => {
                 borderRadius: '15px',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
-                    bgcolor: 'text.disabled',
                     transform: 'translateY(-4px)',
                     '& .play-button': { opacity: 1, transform: 'translateY(0)' },
                 },

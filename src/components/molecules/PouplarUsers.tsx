@@ -62,7 +62,7 @@ export const PopularUsers = (item: IUser) => {
                 </Stack>
 
                 <Tooltip
-                    title={isFollowing ? "Ne plus suivre" : "Suivre l'utilisateur"}
+                    title={isFollowing ? "Ne plus suivre" : "Suivre"}
                     slots={{
                         transition: Zoom,
                     }}

@@ -61,7 +61,7 @@ export const PopularArtists = (item: IArtist) => {
                 </Stack>
 
                 <Tooltip
-                    title={isFollowing ? "Ne plus suivre" : "Suivre l'utilisateur"}
+                    title={isFollowing ? "Ne plus suivre" : "Suivre"}
                     slots={{
                         transition: Zoom,
                     }}
@@ -71,9 +71,6 @@ export const PopularArtists = (item: IArtist) => {
                         onClick={handleFollowClick}
                         sx={{
                             color: "text.primary",
-                            width: '50px',
-                            height: '50px',
-                            borderRadius: '50px',
                             transition: 'all 0.2s ease',
                             '&:hover': {
                                 color: isFollowing ? 'error.main' : 'primary.main',

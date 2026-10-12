@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import IRelease from '@/interfaces/IRelease';
 import { LoadingButton } from '../atoms/LoadingButton';
-import ILibrary from '@/interfaces/ILibrary';
 
 export const ReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
     {
@@ -19,7 +18,9 @@ export const ReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
                 cursor: 'pointer',
                 bgcolor: 'background.paper',
                 borderRadius: '15px',
+                transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
+                    transform: 'translateY(-4px)',
                     '& .play-button': { opacity: 1, transform: 'translateY(0)' },
                 },
             }}

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
 import { ReleaseCard } from '../molecules/ReleaseCard';
 import IRelease from '@/interfaces/IRelease';
-import ILibrary from '@/interfaces/ILibrary';
 
 export const ReleaseGrid = ({ title, items, onToggleQueue, onToggleHistory }:
     {

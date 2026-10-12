@@ -28,7 +28,9 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                 position: 'relative',
                 cursor: 'pointer',
                 opacity: type === 'queue' ? '100%' : '20%',
+                transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
+                    transform: 'translateY(-4px)',
                     '& .play-button': { opacity: 1, transform: 'translateY(0)' },
                 },
             }}
@@ -97,7 +99,7 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                                 {item.release.title}
                             </Typography>
 
-                            {remainingAlbumTracks > 1 && <Typography variant='caption'>
+                            {remainingAlbumTracks > 1 && type === 'queue' && <Typography variant='caption'>
                                 +{remainingAlbumTracks}
                             </Typography>}
                         </Stack>

@@ -3,6 +3,11 @@ import { endpoints } from "./endpoints";
 import IRelease from '@/interfaces/IRelease';
 
 export const releaseService = {
+    search: async (query: string) => {
+        const response = await api.get(endpoints.RELEASES.SEARCH(query));
+        return response.data;
+    },
+
     getTrackgetRelease: async (spotifyId: string) => {
         const response = await api.get(endpoints.RELEASES.EXISTS(spotifyId));
         return response.data;

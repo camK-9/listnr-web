@@ -2,6 +2,11 @@ import api from '@/lib/axios';
 import { endpoints } from '@/lib/endpoints';
 
 export const userService = {
+    search: async (query: string) => {
+        const response = await api.get(endpoints.USERS.SEARCH(query));
+        return response.data;
+    },
+
     getProfile: async () => {
         const response = await api.get(endpoints.USERS.PROFILE);
         return response.data;

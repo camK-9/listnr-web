@@ -24,7 +24,9 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
                 cursor: 'pointer',
                 bgcolor: 'background.paper',
                 borderRadius: '15px',
+                transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
+                    transform: 'translateY(-4px)',
                     '& .play-button': { opacity: 1, transform: 'translateY(0)' },
                 },
             }}
