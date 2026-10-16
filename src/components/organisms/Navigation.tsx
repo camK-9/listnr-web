@@ -36,8 +36,8 @@ export const Navigation = () => {
     const MOBILE_NAV_ITEMS = [
         { label: 'Accueil', path: '/', icon: faHouse },
         { label: 'Social feed', path: '/feed', icon: faFeather },
-        { label: 'À écouter', path: '/library', icon: faHeadphones },
         { label: 'Recherche', path: '/search', icon: faMagnifyingGlass },
+        { label: 'À écouter', path: '/library', icon: faHeadphones },
         { label: user?.username || 'Profil', path: '/profile', icon: faUser },
     ];
 
