@@ -29,7 +29,7 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
 
         setLoading(true);
         try {
-            if (artist && artist.id) {
+            if (artist && artist.spotifyId) {
                 const data = await artistService.toggleFollow(targetId);
                 setIsFollowing(data.isFollowing);
             } else {

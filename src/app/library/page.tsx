@@ -42,6 +42,7 @@ export default function LibraryPage() {
             const result = await libraryService.toggleQueue(releaseItem.spotifyId);
 
             setQueue(result.data);
+            setHasMoreQueue(result.hasMore)
         } catch (err) {
             console.error('Erreur lors de la mise à jour de la queue', err);
         }
@@ -51,9 +52,11 @@ export default function LibraryPage() {
         try {
             const updatedHistory = await libraryService.toggleHistory(releaseItem.spotifyId);
             setHistory(updatedHistory.data);
+            setHasMoreHistory(updatedHistory.hasMore)
 
             const updatedQueue = await libraryService.getQueue(1, 50);
             setQueue(updatedQueue.data);
+            setHasMoreQueue(updatedQueue.hasMore)
         } catch (err) {
             console.error("Erreur lors de la mise à jour de l'historique :", err);
         }
