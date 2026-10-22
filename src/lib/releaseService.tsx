@@ -1,6 +1,5 @@
 import api from "./axios";
 import { endpoints } from "./endpoints";
-import IRelease from '@/interfaces/IRelease';
 
 export const releaseService = {
     search: async (query: string) => {
@@ -8,18 +7,18 @@ export const releaseService = {
         return response.data;
     },
 
-    getTrackgetRelease: async (spotifyId: string) => {
+    getRelease: async (spotifyId: string) => {
         const response = await api.get(endpoints.RELEASES.EXISTS(spotifyId));
         return response.data;
     },
 
-    getTrack: async (spotifyId: string) => {
+    getTracks: async (spotifyId: string) => {
         const response = await api.get(endpoints.RELEASES.TRACKS(spotifyId));
         return response.data;
     },
 
-    getAlbumTracks: async (spotifyId: string) => {
-        const response = await api.get(endpoints.RELEASES.ALBUM_TRACKS(spotifyId));
+    getStats: async (spotifyId: string) => {
+        const response = await api.get(endpoints.RELEASES.STATS(spotifyId));
         return response.data;
     },
 

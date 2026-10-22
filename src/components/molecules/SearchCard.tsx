@@ -9,6 +9,7 @@ import { faCircleCheck, faCircleMinus, faCirclePlus, faCircleXmark, faPlay, faUs
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Avatar, IconButton, Stack, Tooltip, Typography, Zoom } from '@mui/material';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHistory }:
@@ -19,6 +20,7 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
         onToggleQueue: (release: IRelease) => void
         onToggleHistory: (release: IRelease) => void
     }) => {
+    const router = useRouter();
 
     const [isFollowing, setIsFollowing] = useState<Boolean>(false);
     const [loading, setLoading] = useState(false);
@@ -106,7 +108,12 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
             </Stack> : <Avatar src={imageUrl} alt={title || ''} sx={{ width: 100, height: 100 }} /> :
                 <Avatar sx={{ width: 100, height: 100 }}>{title?.[0]}</Avatar>}
 
-            <Stack direction="row" justifyContent="space-between" width="100%">
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                width="100%"
+                onClick={() => router.push(`/release/${release?.spotifyId || artist?.spotifyId || user?.id}`)}
+            >
                 <Stack spacing={2}>
                     <Typography variant='body2'>
                         {title}
