@@ -5,6 +5,7 @@ import IUser from "./IUser";
 export default interface Comment {
     id: string,
     content: string,
+    createdAt: string
     userId: string,
     reviewId: string,
     user: IUser,

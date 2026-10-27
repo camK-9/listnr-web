@@ -16,9 +16,7 @@ export const ReviewForm = ({ releaseId, review }: { releaseId: string, review: I
     const handleSave = async (newRating: number | null, newComment: string) => {
         setLoading(true);
         try {
-            const res = await reviewService.createOrUpdateReview(releaseId, newRating, newComment)
-
-            console.log(res)
+            await reviewService.createOrUpdateReview(releaseId, newRating, newComment)
         } catch (error) {
             console.error("Erreur lors de la sauvegarde de la review", error);
         } finally {
@@ -68,6 +66,10 @@ export const ReviewForm = ({ releaseId, review }: { releaseId: string, review: I
                                 color="primary"
                                 disabled={loading || !comment}
                                 onClick={() => handleSave(rating, comment ? comment : '')}
+                                sx={{
+                                    width: '40px',
+                                    height: '40px',
+                                }}
                             >
                                 <FontAwesomeIcon icon={faPaperPlane} style={{ width: '20px', height: '20px' }} />
                             </IconButton>

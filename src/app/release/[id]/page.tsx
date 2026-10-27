@@ -39,8 +39,6 @@ export default function ReleasePage() {
                     reviewService.getReview(id)
                 ]);
 
-                console.log(releaseData)
-
                 setRelease(releaseData);
                 setReview(reviewData[0])
 
@@ -177,6 +175,13 @@ export default function ReleasePage() {
         return `${minutes}:${paddedSeconds}`;
     };
 
+    const formatCount = (count: number) => {
+        if (count >= 1000) {
+            return (count / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+        }
+        return count.toString();
+    };
+
     return (
         <Stack spacing={4} direction={isMobile ? "column" : "row"} marginTop="50px">
             {loading ? <Stack>
@@ -262,8 +267,8 @@ export default function ReleasePage() {
                                 </Stack>
 
                                 <Typography variant='caption' fontWeight="bold">
-                                    {release.stats.totalListeners} {release.stats.totalListeners > 1 ? "personnes ont écoutés" :
-                                        "personne à écouté"}
+                                    {formatCount(release.stats.totalListeners)} {release.stats.totalListeners > 1 ?
+                                        "personnes ont écoutés" : "personne à écouté"}
                                 </Typography>
                             </Stack>
                         </Stack>

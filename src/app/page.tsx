@@ -32,8 +32,6 @@ export default function HomePage() {
           libraryService.getQueue(1, 50),
         ]);
 
-        console.log(feedData)
-
         setNewReleases(releasesData)
         setPopularReviews(reviewsData)
         setFeed(feedData)

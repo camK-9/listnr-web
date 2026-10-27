@@ -24,7 +24,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const fetchUser = useCallback(async () => {
         try {
-            const { data } = await userService.getProfile();
+            const data = await userService.getProfile();
             setUser(data);
         } catch (error) {
             console.error('Erreur lors du chargement du profil:', error);
