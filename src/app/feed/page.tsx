@@ -1,5 +1,6 @@
 'use client';
 
+import { MusicLoader } from "@/components/atoms/MusicLoader";
 import { PopularArtists } from "@/components/molecules/PouplarArtists";
 import { PopularUsers } from "@/components/molecules/PouplarUsers";
 import { ReviewCard } from "@/components/molecules/ReviewCard";
@@ -10,7 +11,7 @@ import { artistService } from "@/lib/artistService";
 import { feedService } from "@/lib/feedService";
 import { userService } from "@/lib/userService";
 import theme from "@/theme/theme";
-import { Alert, CircularProgress, Divider, Stack, Typography, useMediaQuery } from "@mui/material";
+import { Alert, Divider, Stack, Typography, useMediaQuery } from "@mui/material";
 import { useState, useEffect } from "react";
 
 export default function FeedPage() {
@@ -51,9 +52,7 @@ export default function FeedPage() {
                     {error}
                 </Alert>
             )}
-            {loading ? <Stack>
-                <CircularProgress sx={{ color: 'primary.main' }} />
-            </Stack> : <Stack spacing={8} direction="row" justifyContent="space-between">
+            {loading ? <MusicLoader /> : <Stack spacing={8} direction="row" justifyContent="space-between">
                 <Stack spacing={4} width="100%" maxWidth="600px">
                     <Stack justifyContent="center" height="30px">
                         <Typography variant="h2">

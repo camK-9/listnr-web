@@ -1,12 +1,13 @@
 'use client';
 
+import { MusicLoader } from "@/components/atoms/MusicLoader";
 import { ReleaseCard } from "@/components/molecules/ReleaseCard";
 import IArtist from "@/interfaces/IArtist";
 import IRelease from "@/interfaces/IRelease";
 import { artistService } from "@/lib/artistService";
 import { libraryService } from "@/lib/libraryService";
 import { releaseService } from "@/lib/releaseService";
-import { Avatar, Button, CircularProgress, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Avatar, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -84,9 +85,7 @@ export default function ReleasePage() {
 
     return (
         <Stack spacing={4} mt="50px">
-            {loading ? <Stack>
-                <CircularProgress sx={{ color: 'primary.main' }} />
-            </Stack> : artist && artist.stats && <Stack spacing={4} width="100%">
+            {loading ? <MusicLoader /> : artist && artist.stats && <Stack spacing={4} width="100%">
                 <Stack spacing={4} direction="row" justifyContent="space-between" alignItems="flex-start" maxWidth="800px">
                     <Stack spacing={4} direction="row" alignItems="center">
                         <Avatar

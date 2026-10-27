@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, CircularProgress, Stack } from '@mui/material';
+import { Alert, Stack } from '@mui/material';
 import { ReleaseGrid } from '@/components/organisms/ReleaseGrid';
 import { releaseService } from '@/lib/releaseService';
 import { useState, useEffect } from 'react';
@@ -13,6 +13,7 @@ import { feedService } from '@/lib/feedService';
 import { libraryService } from '@/lib/libraryService';
 import ILibrary from '@/interfaces/ILibrary';
 import { QueueGrid } from '@/components/organisms/QueueGrid';
+import { MusicLoader } from '@/components/atoms/MusicLoader';
 
 export default function HomePage() {
   const [loading, setLoading] = useState(true);
@@ -86,9 +87,7 @@ export default function HomePage() {
         </Alert>
       )}
 
-      {loading ? <Stack>
-        <CircularProgress sx={{ color: 'primary.main' }} />
-      </Stack> : <Stack spacing={4}>
+      {loading ? <MusicLoader /> : <Stack spacing={4}>
         <ReleaseGrid
           title="Sorties récentes"
           items={newReleases}

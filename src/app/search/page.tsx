@@ -1,5 +1,6 @@
 'use client';
 
+import { MusicLoader } from "@/components/atoms/MusicLoader";
 import { SearchCard } from "@/components/molecules/SearchCard";
 import { useDebounce } from "@/hooks/useDebounce";
 import IArtist from "@/interfaces/IArtist";
@@ -12,7 +13,7 @@ import { userService } from "@/lib/userService";
 import theme from "@/theme/theme";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CircularProgress, InputAdornment, Stack, Tab, Tabs, TextField, useMediaQuery } from "@mui/material";
+import { InputAdornment, Stack, Tab, Tabs, TextField, useMediaQuery } from "@mui/material";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -181,17 +182,15 @@ export default function LibraryPage() {
                 <Tab label="Membres" />
             </Tabs>
 
-            {loading ? <Stack>
-                <CircularProgress sx={{ color: 'primary.main' }} />
-            </Stack> : (tab === 0 || tab === 1) &&
-            filteredReleases.map((release) => (
-                <SearchCard
-                    key={release.spotifyId}
-                    release={release}
-                    onToggleQueue={handleToggleQueue}
-                    onToggleHistory={handleToggleHistory}
-                />
-            ))}
+            {loading ? <MusicLoader /> : (tab === 0 || tab === 1) &&
+                filteredReleases.map((release) => (
+                    <SearchCard
+                        key={release.spotifyId}
+                        release={release}
+                        onToggleQueue={handleToggleQueue}
+                        onToggleHistory={handleToggleHistory}
+                    />
+                ))}
 
             {tab === 2 &&
                 artists.map((artist) => (

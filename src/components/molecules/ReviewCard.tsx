@@ -135,7 +135,7 @@ export const ReviewCard = (item: IReview) => {
 
     const handleCopyLink = async () => {
         try {
-            const reviewUrl = window.location.href;
+            const reviewUrl = `${window.location.origin}/review/${item.id}`;
             await navigator.clipboard.writeText(reviewUrl);
             setCopied(true);
             setTimeout(() => {
@@ -152,7 +152,7 @@ export const ReviewCard = (item: IReview) => {
                 await navigator.share({
                     title: `Review de ${item.user.username}`,
                     text: `Découvre cette review sur ${item.release.title} - ${item.release.artist.name}`,
-                    url: window.location.href,
+                    url: `${window.location.origin}/review/${item.id}`,
                 });
                 handleCloseShare();
             } catch (error) {

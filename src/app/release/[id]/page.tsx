@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Typography, Stack, IconButton, Rating, Accordion, AccordionSummary, AccordionDetails, useMediaQuery, CircularProgress } from '@mui/material';
+import { Typography, Stack, IconButton, Rating, Accordion, AccordionSummary, AccordionDetails, useMediaQuery } from '@mui/material';
 import { releaseService } from '@/lib/releaseService';
 import IRelease from '@/interfaces/IRelease';
 import Image from 'next/image';
@@ -14,6 +14,7 @@ import theme from '@/theme/theme';
 import { ReleaseActions } from '@/components/organisms/ReleaseActions';
 import { reviewService } from '@/lib/reviewService';
 import IReview from '@/interfaces/IReview';
+import { MusicLoader } from '@/components/atoms/MusicLoader';
 
 export default function ReleasePage() {
     const params = useParams();
@@ -184,9 +185,7 @@ export default function ReleasePage() {
 
     return (
         <Stack spacing={4} direction={isMobile ? "column" : "row"} mt="50px">
-            {loading ? <Stack>
-                <CircularProgress sx={{ color: 'primary.main' }} />
-            </Stack> : release && release.stats && <Stack spacing={4} width="100%">
+            {loading ? <MusicLoader /> : release && release.stats && <Stack spacing={4} width="100%">
                 <Stack spacing={2} direction={isMobile ? "column" : "row"}>
                     <Stack spacing={2} direction="row">
                         <Stack
