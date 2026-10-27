@@ -557,7 +557,7 @@ export const ReviewCard = (item: IReview) => {
                         </Stack>
                     ))}
                 </Stack>
-            </Stack >}
-        </Stack >
+            </Stack>}
+        </Stack>
     );
 };

@@ -1,23 +1,46 @@
-import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardActions } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import IArtist from '@/interfaces/IArtist';
 import IRelease from '@/interfaces/IRelease';
-import { LoadingButton } from '../atoms/LoadingButton';
+import IUser from '@/interfaces/IUser';
+import { artistService } from '@/lib/artistService';
+import { libraryService } from '@/lib/libraryService';
+import { releaseService } from '@/lib/releaseService';
+import { userService } from '@/lib/userService';
+import { faCircleCheck, faCircleMinus, faCirclePlus, faCircleXmark, faPlay, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Avatar, IconButton, Stack, Tooltip, Typography, Zoom } from '@mui/material';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
-export const ReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
+export const ReleaseCard = ({ release, onToggleQueue, onToggleHistory }:
     {
-        item: IRelease,
-        onToggleQueue: (release: IRelease) => void,
+        release: IRelease,
+        onToggleQueue: (release: IRelease) => void
         onToggleHistory: (release: IRelease) => void
     }) => {
+    const router = useRouter();
+
+    const formatDate = (dateStr: string) => {
+        if (!dateStr) return '';
+        const parts = dateStr.split('-');
+        if (parts.length === 3) {
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        return dateStr;
+    };
 
     return (
-        <Card
+        <Stack
+            spacing={2}
+            direction="row"
+            alignItems="center"
+            position="relative"
+            bgcolor="background.paper"
+            padding="10px"
+            borderRadius="15px"
+            maxWidth="800px"
+            width="100%"
             sx={{
-                position: 'relative',
-                cursor: 'pointer',
-                bgcolor: 'background.paper',
-                borderRadius: '15px',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
                     transform: 'translateY(-4px)',
@@ -25,26 +48,28 @@ export const ReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
                 },
             }}
         >
-            <Stack sx={{ position: 'relative', pt: '100%' }}>
-                <CardMedia
-                    component="img"
-                    image={item.imageUrl}
-                    alt={item.title}
-                    sx={{
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        borderRadius: '10px 10px 0 0',
-                    }}
-                />
+            <Stack position="relative">
+                {release.imageUrl &&
+                    <Image
+                        src={release.imageUrl}
+                        alt={release.title}
+                        width={100}
+                        height={100}
+                        style={{
+                            position: 'relative',
+                            top: 0,
+                            left: 0,
+                            objectFit: 'cover',
+                            borderRadius: '15px'
+                        }}
+                    />
+                }
+
                 <IconButton
                     className="play-button"
                     onClick={(e) => {
                         e.stopPropagation();
-                        window.open(item.spotifyUrl, '_blank', 'noopener,noreferrer');
+                        window.open(release.spotifyUrl, '_blank', 'noopener,noreferrer');
                     }}
                     sx={{
                         position: 'absolute',
@@ -62,39 +87,64 @@ export const ReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
                 </IconButton>
             </Stack>
 
-            <CardContent>
-                <Stack>
-                    <Typography variant="caption" noWrap sx={{ fontWeight: 'bold' }}>
-                        {item.title}
+            <Stack
+                direction="row"
+                justifyContent="space-between"
+                width="100%"
+                onClick={() => router.push(`/release/${release.spotifyId}`)}
+            >
+                <Stack spacing={2}>
+                    <Typography variant='body2'>
+                        {release.title}
                     </Typography>
-                    <Typography variant="caption" noWrap>
-                        {item.artist.name}
+
+                    <Typography variant='caption' color='text.secondary'>
+                        {formatDate(release.releaseDate)}
                     </Typography>
                 </Stack>
-            </CardContent>
 
-            <CardActions>
-                <LoadingButton
-                    variant='contained'
-                    onClick={() => onToggleHistory(item)}
-                    sx={{
-                        borderRadius: '15px'
-                    }}
-                >
-                    {item.isInHistory ? "Pas écouté" : "Écouté"}
-                </LoadingButton>
+                <Stack direction="row" spacing={1} alignItems="center" flexShrink={0}>
+                    <Tooltip
+                        title={release.isInQueue ? "Retirer de la file d'attente" : "Ajouter à la file d'attente"}
+                        slots={{ transition: Zoom }}
+                    >
+                        <IconButton
+                            onClick={() => onToggleQueue(release)}
+                            sx={{
+                                color: release.isInQueue ? 'primary.main' : 'text.secondary',
+                                '&:hover': {
+                                    color: release.isInQueue ? 'error.main' : 'primary.main',
+                                },
+                            }}
+                        >
+                            <FontAwesomeIcon
+                                icon={release.isInQueue ? faCircleMinus : faCirclePlus}
+                                style={{ width: '30px', height: '30px' }}
+                            />
+                        </IconButton>
+                    </Tooltip>
 
-                {!item.isInHistory && <LoadingButton
-                    variant='outlined'
-                    onClick={() => onToggleQueue(item)}
-                    sx={{
-                        borderRadius: '15px',
-                        whiteSpace: 'noWrap'
-                    }}
-                >
-                    {item.isInQueue ? "Retirer" : "Plus tard"}
-                </LoadingButton>}
-            </CardActions>
-        </Card>
+                    <Tooltip
+                        title={release.isInHistory ? "Retirer de l'historique" : "Marquer comme écouté"}
+                        slots={{ transition: Zoom }}
+                    >
+                        <IconButton
+                            onClick={() => onToggleHistory(release)}
+                            sx={{
+                                color: release.isInHistory ? 'primary.main' : 'text.secondary',
+                                '&:hover': {
+                                    color: release.isInHistory ? 'error.main' : 'primary.main',
+                                },
+                            }}
+                        >
+                            <FontAwesomeIcon
+                                icon={release.isInHistory ? faCircleXmark : faCircleCheck}
+                                style={{ width: '30px', height: '30px' }}
+                            />
+                        </IconButton>
+                    </Tooltip>
+                </Stack>
+            </Stack>
+        </Stack >
     );
 };

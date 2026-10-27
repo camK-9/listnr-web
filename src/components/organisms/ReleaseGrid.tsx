@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Stack, Typography } from '@mui/material';
-import { ReleaseCard } from '../molecules/ReleaseCard';
+import { NewReleaseCard } from '../molecules/NewReleaseCard';
 import IRelease from '@/interfaces/IRelease';
 
 export const ReleaseGrid = ({ title, items, onToggleQueue, onToggleHistory }:
@@ -56,7 +56,7 @@ export const ReleaseGrid = ({ title, items, onToggleQueue, onToggleHistory }:
                             maxWidth: "170px"
                         }}
                     >
-                        <ReleaseCard
+                        <NewReleaseCard
                             item={item}
                             onToggleQueue={onToggleQueue}
                             onToggleHistory={onToggleHistory}

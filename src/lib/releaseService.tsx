@@ -26,4 +26,9 @@ export const releaseService = {
         const response = await api.get(endpoints.RELEASES.NEWS);
         return response.data;
     },
+
+    getArtistRelases: async (spotifyId: string) => {
+        const response = await api.get(endpoints.RELEASES.ARTIST(spotifyId));
+        return response.data;
+    }
 };

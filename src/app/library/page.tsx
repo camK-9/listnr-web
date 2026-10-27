@@ -100,7 +100,13 @@ export default function LibraryPage() {
                 <Tabs
                     value={tab}
                     onChange={(_, newTab: number) => setTab(newTab)}
-                    sx={{ height: '50px' }}
+                    sx={{
+                        minHeight: '50px',
+                        width: '100%',
+                        '& .MuiTab-root': {
+                            px: { xs: '20px', sm: '40px', md: '70px', lg: '100px' },
+                        },
+                    }}
                 >
                     <Tab label="À écouter" />
                     <Tab label="À venir" />

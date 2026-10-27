@@ -22,6 +22,7 @@ export const endpoints = {
     EXISTS: (id: string) => `/releases/${id}`,
     TRACKS: (id: string) => `/releases/${id}/tracks`,
     STATS: (id: string) => `/releases/stats/${id}`,
+    ARTIST: (id: string) => `/releases/artist/${id}`,
     NEWS: '/releases/new'
   },
   REVIEWS: {

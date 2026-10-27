@@ -45,6 +45,18 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
         }
     };
 
+    const handleRedirect = () => {
+        if (release) {
+            router.push(`/release/${release.spotifyId}`)
+        } else if (artist) {
+            router.push(`/artist/${artist.spotifyId}`)
+        } else if (user) {
+            router.push(`/user/${user.id}`)
+        } else {
+            router.push(window.location.href)
+        }
+    };
+
     const title = release?.title || artist?.name || user?.username;
     const subtitle = release?.artist?.name || artist?.stats?.followersCount || user?.stats?.followersCount;
     const imageUrl = release?.imageUrl || artist?.imageUrl || user?.avatarUrl;
@@ -112,7 +124,7 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                 direction="row"
                 justifyContent="space-between"
                 width="100%"
-                onClick={() => router.push(`/release/${release?.spotifyId || artist?.spotifyId || user?.id}`)}
+                onClick={handleRedirect}
             >
                 <Stack spacing={2}>
                     <Typography variant='body2'>
@@ -130,7 +142,6 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                         slots={{ transition: Zoom }}
                     >
                         <IconButton
-                            disabled={loading}
                             onClick={() => onToggleQueue(release)}
                             sx={{
                                 color: release.isInQueue ? 'primary.main' : 'text.secondary',
@@ -151,7 +162,6 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                         slots={{ transition: Zoom }}
                     >
                         <IconButton
-                            disabled={loading}
                             onClick={() => onToggleHistory(release)}
                             sx={{
                                 color: release.isInHistory ? 'primary.main' : 'text.secondary',
