@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Alert, Stack, Link } from '@mui/material';
+import { Alert, Stack, Link, Button } from '@mui/material';
 import { authService } from '@/lib/authService';
-import { LoadingButton } from '../atoms/LoadingButton';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 import { AppTextField } from '../molecules/AppTextField';
 import { SocialButtons } from '../molecules/SocialButtons';
@@ -25,7 +24,7 @@ export const LoginForm = () => {
 
         try {
             const data = await authService.login({ email, password });
-            login(data.access_token, data.user);
+            login(data.access_token);
         } catch (err: any) {
             setError(err.response?.data?.message || 'Identifiants invalides');
             setLoading(false);
@@ -68,14 +67,14 @@ export const LoginForm = () => {
                     Mot de passe oublié ?
                 </Link>
 
-                <LoadingButton
+                <Button
                     fullWidth
                     type="submit"
                     variant="contained"
-                    isLoading={loading}
+                    sx={{ borderRadius: '30px' }}
                 >
                     Se connecter
-                </LoadingButton>
+                </Button>
             </Stack>
 
             <SocialButtons mode="login" />

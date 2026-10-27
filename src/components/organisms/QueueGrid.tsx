@@ -73,14 +73,7 @@ export const QueueGrid = ({ title, items, onToggleQueue, onToggleHistory }:
                 }}
             >
                 {displayQueue.map((item: ILibrary) => (
-                    <Stack
-                        key={item.releaseId}
-                        sx={{
-                            width: "170px",
-                            minWidth: "170px",
-                            maxWidth: "170px"
-                        }}
-                    >
+                    <Stack key={item.releaseId} width="170px" minWidth="170px" maxWidth="170px">
                         <QueueCard
                             item={item}
                             queue={items}

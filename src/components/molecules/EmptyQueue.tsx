@@ -1,10 +1,9 @@
 'use client';
 
-import { Typography, Stack } from '@mui/material';
+import { Typography, Stack, Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCompass, faRadio } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/navigation';
-import { LoadingButton } from '../atoms/LoadingButton';
 
 export const EmptyQueue = () => {
     const router = useRouter();
@@ -13,25 +12,20 @@ export const EmptyQueue = () => {
         <Stack
             spacing={2}
             alignItems="center"
-            sx={{
-                padding: '50px',
-                textAlign: 'center',
-                borderRadius: '16px',
-                border: '1px dashed',
-                borderColor: 'divider',
-            }}
+            p="50px"
+            textAlign="center"
+            borderRadius="16px"
+            border="1px dashed"
+            borderColor="divider"
         >
             <Stack
-                sx={{
-                    width: '70px',
-                    height: '70px',
-                    borderRadius: '60px',
-                    bgcolor: 'background.paper',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'primary.main',
-                }}
+                width="70px"
+                height="70px"
+                borderRadius="60px"
+                bgcolor="background.paper"
+                alignItems="center"
+                justifyContent="center"
+                color="primary.main"
             >
                 <FontAwesomeIcon icon={faRadio} size="2x" />
             </Stack>
@@ -44,13 +38,14 @@ export const EmptyQueue = () => {
                 Tu es totalement à jour. Explore les sorties récentes pour ajouter de nouveaux projets à ta file d'attente.
             </Typography>
 
-            <LoadingButton
+            <Button
                 variant="contained"
                 onClick={() => router.push('/search')}
                 startIcon={<FontAwesomeIcon icon={faCompass} />}
+                sx={{ borderRadius: '30px' }}
             >
                 Explorer les nouveautés
-            </LoadingButton>
+            </Button>
         </Stack>
     );
 };

@@ -24,8 +24,8 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
             spacing={2}
             direction="row"
             bgcolor="background.paper"
+            position="relative"
             sx={{
-                position: 'relative',
                 cursor: 'pointer',
                 opacity: type === 'queue' ? '100%' : '20%',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
@@ -38,13 +38,11 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
             <Stack position="relative">
                 {item.release.imageUrl &&
                     <Stack
-                        sx={{
-                            position: 'relative',
-                            top: 0,
-                            left: 0,
-                            objectFit: 'cover',
-                            borderRadius: '10px 10px 0 0',
-                        }}
+                        position="relative"
+                        top={0}
+                        left={0}
+                        borderRadius="10px 10px 0 0"
+                        sx={{ objectFit: 'cover' }}
                     >
                         <Image src={item.release.imageUrl} alt={item.release.title} width={130} height={130} />
                     </Stack>
@@ -72,7 +70,7 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                 </IconButton>
             </Stack>
 
-            <Stack direction="row" justifyContent="space-between" padding="10px 0px 10px 0px" width="100%" minWidth={0}>
+            <Stack direction="row" justifyContent="space-between" py="10px" width="100%" minWidth={0}>
                 <Stack justifyContent="space-between" minWidth={0}>
                     <Stack
                         spacing={1}
@@ -81,7 +79,7 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                         border="1px solid"
                         borderColor="text.primary"
                         borderRadius="30px"
-                        padding="5px"
+                        p="5px"
                     >
                         {item.release.album ? <Typography variant="body2" noWrap>
                             {item.release.album.title}

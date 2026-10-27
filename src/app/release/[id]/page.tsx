@@ -36,7 +36,7 @@ export default function ReleasePage() {
             try {
                 const [releaseData, reviewData] = await Promise.all([
                     releaseService.getStats(id),
-                    reviewService.getReview(id)
+                    reviewService.getReviewByRelease(id)
                 ]);
 
                 setRelease(releaseData);
@@ -183,7 +183,7 @@ export default function ReleasePage() {
     };
 
     return (
-        <Stack spacing={4} direction={isMobile ? "column" : "row"} marginTop="50px">
+        <Stack spacing={4} direction={isMobile ? "column" : "row"} mt="50px">
             {loading ? <Stack>
                 <CircularProgress sx={{ color: 'primary.main' }} />
             </Stack> : release && release.stats && <Stack spacing={4} width="100%">
@@ -201,13 +201,11 @@ export default function ReleasePage() {
                         >
                             {release.imageUrl &&
                                 <Stack
-                                    sx={{
-                                        position: 'relative',
-                                        top: 0,
-                                        left: 0,
-                                        objectFit: 'cover',
-                                        borderRadius: '10px 10px 0 0',
-                                    }}
+                                    position="relative"
+                                    top={0}
+                                    left={0}
+                                    borderRadius="10px 10px 0 0"
+                                    sx={{ objectFit: 'cover' }}
                                 >
                                     <Image src={release.imageUrl} alt={release.title} width={175} height={175} />
                                 </Stack>
@@ -294,7 +292,7 @@ export default function ReleasePage() {
                                 sx={{
                                     flexDirection: 'row-reverse',
                                     '& .MuiAccordionSummary-expandIconWrapper': {
-                                        marginRight: '10px',
+                                        mr: '10px',
                                     },
                                     '&.Mui-expanded': {
                                         borderBottom: '3px solid',
@@ -318,19 +316,19 @@ export default function ReleasePage() {
                                                 e.stopPropagation();
                                                 handleToggleHistory(release, 'album');
                                             }}
+                                            display="inline-flex"
+                                            alignItems="center"
+                                            justifyContent="center"
+                                            width="50px"
+                                            height="50px"
+                                            borderRadius="50px"
                                             sx={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
                                                 cursor: 'pointer',
                                                 color: release.isInHistory ? 'primary.main' : 'text.secondary',
-                                                width: '50px',
-                                                height: '50px',
-                                                borderRadius: '50px',
                                                 transition: 'all 0.2s ease',
                                                 '&:hover': {
                                                     color: 'primary.main',
-                                                    backgroundColor: 'divider',
+                                                    bgcolor: 'divider',
                                                 }
                                             }}
                                         >
@@ -346,7 +344,7 @@ export default function ReleasePage() {
                                 </Stack>
                             </AccordionSummary>
 
-                            <AccordionDetails sx={{ padding: 0 }}>
+                            <AccordionDetails sx={{ p: 0 }}>
                                 <Stack spacing={2}>
                                     {tracks.map((track) => (
                                         <Stack
@@ -354,11 +352,9 @@ export default function ReleasePage() {
                                             direction="row"
                                             alignItems="center"
                                             justifyContent="space-between"
-                                            padding="15px"
-                                            sx={{
-                                                borderBottom: '1px solid',
-                                                borderColor: 'text.secondary',
-                                            }}
+                                            p="15px"
+                                            borderBottom="1px solid"
+                                            borderColor="text.secondary"
                                         >
                                             <Stack spacing={1}>
                                                 <Typography variant="caption">
@@ -408,12 +404,10 @@ export default function ReleasePage() {
                     ) : <Stack
                         alignItems="center"
                         justifyContent="center"
-                        padding="20px"
-                        sx={{
-                            border: '1px dashed',
-                            borderColor: 'text.secondary',
-                            borderRadius: '5px'
-                        }}
+                        p="20px"
+                        border="1px dashed"
+                        borderColor="text.secondary"
+                        borderRadius="5px"
                     >
                         <Typography variant="caption" color="text.secondary">
                             Aucune review postée pour le moment

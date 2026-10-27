@@ -43,14 +43,7 @@ export const PopularReviewGrid = ({ title, items }: { title: string, items: IRev
                 }}
             >
                 {displayedItems.map((item: IReview) => (
-                    <Stack
-                        key={item.id}
-                        sx={{
-                            width: "170px",
-                            minWidth: "170px",
-                            maxWidth: "170px"
-                        }}
-                    >
+                    <Stack key={item.id} width="170px" minWidth="170px" maxWidth="170px">
                         <PopularReviewCard {...item} />
                     </Stack>
                 ))}

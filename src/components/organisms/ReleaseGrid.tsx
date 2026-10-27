@@ -48,14 +48,7 @@ export const ReleaseGrid = ({ title, items, onToggleQueue, onToggleHistory }:
                 }}
             >
                 {items.map((item: IRelease) => (
-                    <Stack
-                        key={item.spotifyId}
-                        sx={{
-                            width: "170px",
-                            minWidth: "170px",
-                            maxWidth: "170px"
-                        }}
-                    >
+                    <Stack key={item.spotifyId} width="170px" minWidth="170px" maxWidth="170px">
                         <NewReleaseCard
                             item={item}
                             onToggleQueue={onToggleQueue}

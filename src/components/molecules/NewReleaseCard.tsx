@@ -1,8 +1,7 @@
-import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardActions } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardActions, Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import IRelease from '@/interfaces/IRelease';
-import { LoadingButton } from '../atoms/LoadingButton';
 
 export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
     {
@@ -25,7 +24,7 @@ export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
                 },
             }}
         >
-            <Stack sx={{ position: 'relative', pt: '100%' }}>
+            <Stack position="relative" pt="100%">
                 <CardMedia
                     component="img"
                     image={item.imageUrl}
@@ -64,7 +63,7 @@ export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
 
             <CardContent>
                 <Stack>
-                    <Typography variant="caption" noWrap sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="caption" noWrap fontWeight={700}>
                         {item.title}
                     </Typography>
                     <Typography variant="caption" noWrap>
@@ -74,26 +73,21 @@ export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
             </CardContent>
 
             <CardActions>
-                <LoadingButton
+                <Button
                     variant='contained'
                     onClick={() => onToggleHistory(item)}
-                    sx={{
-                        borderRadius: '15px'
-                    }}
+                    sx={{ borderRadius: '15px' }}
                 >
                     {item.isInHistory ? "Pas écouté" : "Écouté"}
-                </LoadingButton>
+                </Button>
 
-                {!item.isInHistory && <LoadingButton
+                {!item.isInHistory && <Button
                     variant='outlined'
                     onClick={() => onToggleQueue(item)}
-                    sx={{
-                        borderRadius: '15px',
-                        whiteSpace: 'noWrap'
-                    }}
+                    sx={{ borderRadius: '15px', whiteSpace: 'noWrap' }}
                 >
                     {item.isInQueue ? "Retirer" : "Plus tard"}
-                </LoadingButton>}
+                </Button>}
             </CardActions>
         </Card>
     );

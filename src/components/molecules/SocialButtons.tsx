@@ -1,5 +1,4 @@
-import { Stack, Link, Divider, Typography } from '@mui/material';
-import { LoadingButton } from '../atoms/LoadingButton';
+import { Stack, Link, Divider, Typography, Button } from '@mui/material';
 import { faSpotify, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -20,7 +19,7 @@ export const SocialButtons = ({ mode }: SocialLoginButtonsProps) => {
                 </Typography>
             </Divider>
 
-            <LoadingButton
+            <Button
                 fullWidth
                 variant="contained"
                 startIcon={<FontAwesomeIcon icon={faGoogle} />}
@@ -28,12 +27,13 @@ export const SocialButtons = ({ mode }: SocialLoginButtonsProps) => {
                 sx={{
                     bgcolor: 'action.hover',
                     color: 'background.default',
+                    borderRadius: '30px'
                 }}
             >
                 {mode == "login" ? "Se connecter" : "S'inscrire"} avec Google
-            </LoadingButton>
+            </Button>
 
-            <LoadingButton
+            <Button
                 fullWidth
                 variant="contained"
                 startIcon={<FontAwesomeIcon icon={faSpotify} />}
@@ -41,10 +41,11 @@ export const SocialButtons = ({ mode }: SocialLoginButtonsProps) => {
                 sx={{
                     bgcolor: 'success.main',
                     color: 'background.default',
+                    borderRadius: '30px'
                 }}
             >
                 {mode == "login" ? "Se connecter" : "S'inscrire"} avec Spotify
-            </LoadingButton>
+            </Button>
 
             <Typography textAlign="center">
                 {mode == "login" ? "Pas encore de compte ?" :

@@ -83,7 +83,7 @@ export default function ReleasePage() {
     });
 
     return (
-        <Stack spacing={4} marginTop="50px">
+        <Stack spacing={4} mt="50px">
             {loading ? <Stack>
                 <CircularProgress sx={{ color: 'primary.main' }} />
             </Stack> : artist && artist.stats && <Stack spacing={4} width="100%">

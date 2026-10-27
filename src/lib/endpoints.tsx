@@ -28,6 +28,7 @@ export const endpoints = {
   REVIEWS: {
     EXISTS: (id: string) => `/reviews/${id}`,
     CREATE: (id: string) => `/reviews/${id}`,
+    RELEASE: (id: string) => `/reviews/release/${id}`,
     LIKE: (id: string) => `/reviews/${id}/like`,
     COMMENT: (id: string) => `/reviews/${id}/comments`,
     LIKE_COMMENT: (id: string) => `/reviews/comments/${id}/like`,

@@ -66,7 +66,7 @@ export default function FeedPage() {
                     ))}
                 </Stack>
 
-                <Stack spacing={8} sx={{ display: isMobile ? 'none' : 'flex', flex: '0 1 350px', minWidth: '275px' }}>
+                <Stack spacing={8} display={isMobile ? 'none' : 'flex'} flex="0 1 350px" minWidth="275px">
                     <Stack spacing={4}>
                         <Stack justifyContent="center" height="30px">
                             <Typography variant="body2">
@@ -88,7 +88,7 @@ export default function FeedPage() {
                         ))}
                     </Stack>
 
-                    <Stack spacing={4} sx={{ display: isMobile ? 'none' : 'flex' }}>
+                    <Stack spacing={4} display={isMobile ? 'none' : 'flex'}>
                         <Stack justifyContent="center" height="30px">
                             <Typography variant="body2">
                                 Artistes populaire

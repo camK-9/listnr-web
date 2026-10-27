@@ -7,25 +7,20 @@ export const EmptyHistory = () => {
         <Stack
             spacing={2}
             alignItems="center"
-            sx={{
-                padding: '50px',
-                textAlign: 'center',
-                borderRadius: '16px',
-                border: '1px dashed',
-                borderColor: 'divider',
-            }}
+            p="50px"
+            textAlign="center"
+            borderRadius="16px"
+            border="1px dashed"
+            borderColor="divider"
         >
             <Stack
-                sx={{
-                    width: '70px',
-                    height: '70px',
-                    borderRadius: '60px',
-                    bgcolor: 'background.paper',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'primary.main',
-                }}
+                width="70px"
+                height="70px"
+                borderRadius="60px"
+                bgcolor="background.paper"
+                alignItems="center"
+                justifyContent="center"
+                color="primary.main"
             >
                 <FontAwesomeIcon icon={faClockRotateLeft} size="2x" />
             </Stack>
@@ -37,6 +32,6 @@ export const EmptyHistory = () => {
             <Typography variant="body2" color="text.secondary" maxWidth="400px">
                 Tes morceaux et albums marqués comme écoutés apparaîtront ici.
             </Typography>
-        </Stack>
+        </Stack >
     );
 };

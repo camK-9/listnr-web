@@ -1,9 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Alert, Stack, Link, Checkbox, Typography } from '@mui/material';
+import { Alert, Stack, Link, Checkbox, Typography, Button } from '@mui/material';
 import { authService } from '@/lib/authService';
-import { LoadingButton } from '../atoms/LoadingButton';
 import { useRouter } from 'next/navigation';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 import { AppTextField } from '../molecules/AppTextField';
@@ -107,14 +106,14 @@ export const RegisterForm = () => {
                     </Typography>
                 </Stack>
 
-                <LoadingButton
+                <Button
                     fullWidth
                     type="submit"
                     variant="contained"
-                    isLoading={loading}
+                    sx={{ borderRadius: '30px' }}
                 >
                     S'inscrire
-                </LoadingButton>
+                </Button>
             </Stack>
 
             <SocialButtons mode="register" />

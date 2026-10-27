@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeRegistry>
           <AuthProvider>
             <Navigation />
-            <Container maxWidth="lg" sx={{ marginTop: '20px', marginBottom: '80px' }}>
+            <Container maxWidth="lg" sx={{ mt: '20px', mb: '80px' }}>
               {children}
             </Container>
           </AuthProvider>

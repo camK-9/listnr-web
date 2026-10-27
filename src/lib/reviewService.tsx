@@ -7,6 +7,11 @@ export const reviewService = {
         return response.data;
     },
 
+    getReviewByRelease: async (spotifyId: string) => {
+        const response = await api.get(endpoints.REVIEWS.RELEASE(spotifyId));
+        return response.data;
+    },
+
     getPopularReviews: async () => {
         const response = await api.get(endpoints.REVIEWS.POPULAR);
         return response.data;

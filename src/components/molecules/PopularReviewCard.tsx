@@ -19,7 +19,7 @@ export const PopularReviewCard = (item: IReview) => {
                 },
             }}
         >
-            <Stack sx={{ position: 'relative', pt: '100%' }}>
+            <Stack position="relative" pt="100%">
                 <CardMedia
                     component="img"
                     image={item.release.imageUrl}
@@ -58,7 +58,7 @@ export const PopularReviewCard = (item: IReview) => {
 
             <CardContent>
                 <Stack spacing={1}>
-                    <Typography variant="caption" noWrap sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="caption" noWrap fontWeight={700}>
                         {item.user.username}
                     </Typography>
 

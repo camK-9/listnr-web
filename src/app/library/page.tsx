@@ -112,7 +112,7 @@ export default function LibraryPage() {
                     <Tab label="À venir" />
                 </Tabs>
 
-                <Stack spacing={4} sx={{ display: tab == 0 ? 'flex' : 'none' }}>
+                <Stack spacing={4} display={tab == 0 ? 'flex' : 'none'}>
                     {displayQueue.length === 0 ? <EmptyQueue /> : displayQueue.map((item: ILibrary) => (
                         <LibraryCard
                             key={item.releaseId}
@@ -131,14 +131,13 @@ export default function LibraryPage() {
                 </Stack>
             </Stack>
 
-            <Stack spacing={4} sx={{ display: tab == 0 ? 'flex' : 'none' }} flex="0 1 450px" minWidth="350px">
+            <Stack spacing={4} display={tab == 0 ? 'flex' : 'none'} flex="0 1 450px" minWidth="350px">
                 <Typography
                     variant="h2"
-                    sx={{
-                        height: '50px',
-                        display: 'flex',
-                        alignItems: 'center'
-                    }}>
+                    height="50px"
+                    display="flex"
+                    alignItems="center"
+                >
                     Historique d'écoute
                 </Typography>
 

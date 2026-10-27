@@ -1,7 +1,6 @@
-import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardActions } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardActions, Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
-import { LoadingButton } from '../atoms/LoadingButton';
 import ILibrary from '@/interfaces/ILibrary';
 import IRelease from '@/interfaces/IRelease';
 
@@ -31,7 +30,7 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
                 },
             }}
         >
-            <Stack sx={{ position: 'relative', pt: '100%' }}>
+            <Stack position="relative" pt="100%">
                 <CardMedia
                     component="img"
                     image={item.release.imageUrl}
@@ -86,26 +85,21 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
             </CardContent>
 
             <CardActions>
-                <LoadingButton
+                <Button
                     variant='contained'
                     onClick={() => onToggleHistory(item.release)}
-                    sx={{
-                        borderRadius: '15px'
-                    }}
+                    sx={{ borderRadius: '15px' }}
                 >
                     Écouté
-                </LoadingButton>
+                </Button>
 
-                <LoadingButton
+                <Button
                     variant='outlined'
                     onClick={() => onToggleQueue(item.release)}
-                    sx={{
-                        borderRadius: '15px',
-                        whiteSpace: 'noWrap'
-                    }}
+                    sx={{ borderRadius: '15px', whiteSpace: 'noWrap' }}
                 >
                     Passer
-                </LoadingButton>
+                </Button>
             </CardActions>
         </Card>
     );

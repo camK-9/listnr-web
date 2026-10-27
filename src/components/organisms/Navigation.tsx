@@ -126,7 +126,7 @@ export const Navigation = () => {
                                     onClick={() => router.push(item.path)}
                                     startIcon={<FontAwesomeIcon icon={item.icon} style={{ fontSize: '15px' }} />}
                                     sx={{
-                                        padding: '8px 20px',
+                                        p: '8px 20px',
                                         borderRadius: '20px',
                                         color: isActive
                                             ? 'primary.main'
@@ -148,13 +148,11 @@ export const Navigation = () => {
             </AppBar>
 
             {isMobile && <Stack
-                sx={{
-                    position: 'fixed',
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    zIndex: (t) => t.zIndex.drawer + 1,
-                }}
+                position="fixed"
+                bottom={0}
+                left={0}
+                right={0}
+                zIndex={(t) => t.zIndex.drawer + 1}
             >
                 <BottomNavigation
                     value={pathname}

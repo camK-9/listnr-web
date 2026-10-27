@@ -195,16 +195,16 @@ export const ReviewCard = (item: IReview) => {
 
     const isLiked = user ? likes.some((like) => like.userId === user.id) : false;
 
+    console.log(item.id)
+
     return (
         <Stack
             spacing={2}
-            sx={{
-                position: 'relative',
-                cursor: 'pointer',
-                padding: '20px',
-                bgcolor: 'background.paper',
-                borderRadius: '15px'
-            }}
+            position="relative"
+            p="20px"
+            bgcolor="background.paper"
+            borderRadius="15px"
+            sx={{ cursor: 'pointer' }}
         >
             <Stack spacing={1} direction="row" alignItems="center">
                 <Avatar
@@ -245,14 +245,8 @@ export const ReviewCard = (item: IReview) => {
 
                 <Typography
                     variant='caption'
-                    sx={{
-                        maxHeight: '100px',
-                        display: '-webkit-box',
-                        WebkitLineClamp: 5,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                    }}
+                    whiteSpace="pre-line"
+                    sx={{ wordBreak: 'break-word' }}
                 >
                     {item.comment}
                 </Typography>
@@ -339,7 +333,7 @@ export const ReviewCard = (item: IReview) => {
                             onClick={handleNativeShare}
                             sx={{
                                 fontSize: '15px',
-                                padding: '15px',
+                                p: '15px',
                                 '&:hover': { bgcolor: 'primary.main' }
                             }}
                         >
@@ -351,7 +345,7 @@ export const ReviewCard = (item: IReview) => {
                         onClick={handleCopyLink}
                         sx={{
                             fontSize: '15px',
-                            padding: '15px',
+                            p: '15px',
                             color: copied ? 'success.main' : 'inherit',
                             '&:hover': { bgcolor: 'primary.main' }
                         }}
@@ -397,7 +391,7 @@ export const ReviewCard = (item: IReview) => {
                             key={comment.id}
                             direction="row"
                             spacing={1}
-                            sx={{ padding: "10px" }}
+                            p="10px"
                         >
                             <Avatar
                                 src={comment.user?.avatarUrl}
@@ -412,6 +406,7 @@ export const ReviewCard = (item: IReview) => {
                                     <Typography variant='caption' fontWeight={600}>
                                         {comment.user?.username}
                                     </Typography>
+
                                     <Typography variant='caption' color="text.secondary">
                                         {formatTimeAgo(comment.createdAt)}
                                     </Typography>
@@ -450,7 +445,7 @@ export const ReviewCard = (item: IReview) => {
                                 </Stack>
 
                                 {replyingToId === comment.id && user && (
-                                    <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                                    <Stack direction="row" spacing={1}>
                                         <TextField
                                             fullWidth
                                             size="small"
@@ -471,7 +466,10 @@ export const ReviewCard = (item: IReview) => {
                                                                 height: '30px',
                                                             }}
                                                         >
-                                                            <FontAwesomeIcon icon={faPaperPlane} style={{ width: '15px', height: '15px' }} />
+                                                            <FontAwesomeIcon
+                                                                icon={faPaperPlane}
+                                                                style={{ width: '15px', height: '15px' }}
+                                                            />
                                                         </IconButton>
                                                     ),
                                                 }
@@ -486,8 +484,6 @@ export const ReviewCard = (item: IReview) => {
                                     sx={{
                                         cursor: 'pointer',
                                         color: 'text.secondary',
-                                        mt: 1,
-                                        display: 'inline-block',
                                         '&:hover': { color: 'primary.main' }
                                     }}
                                 >
@@ -501,16 +497,14 @@ export const ReviewCard = (item: IReview) => {
                                 {expandedReplies.includes(comment.id) &&
                                     comments.filter((c: IComment) => c.parentId === comment.id).length > 0 && <Stack
                                         spacing={1}
-                                        sx={{
-                                            borderLeft: '2px solid',
-                                            borderColor: 'divider'
-                                        }}
+                                        borderLeft="2px solid"
+                                        borderColor="text.secondary"
                                     >
                                         {comments.filter((c: IComment) => c.parentId === comment.id).map((reply: IComment) => <Stack
                                             key={reply.id}
                                             direction="row"
                                             spacing={1}
-                                            sx={{ padding: "10px" }}
+                                            p="10px"
                                         >
                                             <Avatar
                                                 src={reply.user?.avatarUrl}
@@ -525,30 +519,30 @@ export const ReviewCard = (item: IReview) => {
                                                     <Typography variant='caption' fontWeight={600}>
                                                         {reply.user?.username}
                                                     </Typography>
+
                                                     <Typography variant='caption' color="text.secondary">
                                                         {formatTimeAgo(reply.createdAt)}
                                                     </Typography>
                                                 </Stack>
+
                                                 <Typography variant='caption'>
                                                     {reply.content}
                                                 </Typography>
 
-                                                <Stack direction="row" spacing={1} alignItems="center">
-                                                    <Typography
-                                                        variant='caption'
-                                                        onClick={() => handleToggleCommentLike(reply.id)}
-                                                        sx={{
-                                                            cursor: 'pointer',
-                                                            color: user && reply.likes.some((like) => like.userId === user.id) ?
-                                                                'action.hover' : 'text.secondary',
-                                                            fontWeight: 600,
-                                                            fontSize: '10px',
-                                                            '&:hover': { color: 'primary.main' }
-                                                        }}
-                                                    >
-                                                        {reply.likes?.length > 0 ? `(${reply.likes.length})` : ''} J'aime
-                                                    </Typography>
-                                                </Stack>
+                                                <Typography
+                                                    variant='caption'
+                                                    onClick={() => handleToggleCommentLike(reply.id)}
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                        color: user && reply.likes.some((like) => like.userId === user.id) ?
+                                                            'action.hover' : 'text.secondary',
+                                                        fontWeight: 600,
+                                                        fontSize: '10px',
+                                                        '&:hover': { color: 'primary.main' }
+                                                    }}
+                                                >
+                                                    {reply.likes?.length > 0 ? `(${reply.likes.length})` : ''} J'aime
+                                                </Typography>
                                             </Stack>
                                         </Stack>
                                         )}

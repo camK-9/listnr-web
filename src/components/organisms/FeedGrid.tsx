@@ -52,14 +52,7 @@ export const FeedGrid = ({ title, items }: { title: string, items: IReview[] }) 
                 }}
             >
                 {displayedItems.map((item: IReview) => (
-                    <Stack
-                        key={item.id}
-                        sx={{
-                            width: '300px',
-                            minWidth: '300px',
-                            maxWidth: '300px',
-                        }}
-                    >
+                    <Stack key={item.id} width="300px" minWidth="300px" maxWidth="300px">
                         <ReviewCard {...item} />
                     </Stack>
                 ))}
