@@ -80,13 +80,17 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                 },
             }}
         >
-            {imageUrl ? release ? <Stack position="relative">
+            {imageUrl ? release ? <Stack position="relative" sx={{ cursor: 'pointer' }}>
                 {release.imageUrl &&
                     <Image
                         src={release.imageUrl}
                         alt={release.title}
                         width={100}
                         height={100}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(release.spotifyUrl, '_blank', 'noopener,noreferrer');
+                        }}
                         style={{
                             position: 'relative',
                             top: 0,
@@ -117,16 +121,15 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                 >
                     <FontAwesomeIcon icon={faPlay} style={{ fontSize: '10px' }} />
                 </IconButton>
-            </Stack> : <Avatar src={imageUrl} alt={title || ''} sx={{ width: 100, height: 100 }} /> :
-                <Avatar sx={{ width: 100, height: 100 }}>{title?.[0]}</Avatar>}
-
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                width="100%"
+            </Stack> : <Avatar
+                src={imageUrl}
+                alt={title || ''}
                 onClick={handleRedirect}
-            >
-                <Stack spacing={2}>
+                sx={{ width: 100, height: 100, cursor: 'pointer' }}
+            /> : <Avatar onClick={handleRedirect} sx={{ width: 100, height: 100, cursor: 'pointer' }}>{title?.[0]}</Avatar>}
+
+            <Stack direction="row" justifyContent="space-between" width="100%">
+                <Stack spacing={2} onClick={handleRedirect} sx={{ cursor: 'pointer' }}>
                     <Typography variant='body2'>
                         {title}
                     </Typography>

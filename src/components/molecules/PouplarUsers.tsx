@@ -3,9 +3,12 @@ import { userService } from "@/lib/userService";
 import { faUserMinus, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar, IconButton, Skeleton, Stack, Tooltip, Typography, Zoom } from "@mui/material"
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export const PopularUsers = (item: IUser) => {
+    const router = useRouter();
+
     const [profile, setProfile] = useState<IUser>();
     const [isFollowing, setIsFollowing] = useState<Boolean>(false);
     const [followersCount, setFollowersCount] = useState(0);
@@ -39,7 +42,14 @@ export const PopularUsers = (item: IUser) => {
         <Stack>
             {!profile ? <PopularUsersSkeleton /> : <Stack direction="row" justifyContent="space-between">
                 <Stack spacing={1}>
-                    <Stack spacing={1} direction='row' alignItems="center">
+                    <Stack
+                        spacing={1}
+                        direction='row'
+                        alignItems="center"
+                        width="fit-content"
+                        onClick={() => router.push(`/user/${profile.id}`)}
+                        sx={{ cursor: 'pointer' }}
+                    >
                         <Avatar
                             src={profile.avatarUrl}
                             alt={profile.username}

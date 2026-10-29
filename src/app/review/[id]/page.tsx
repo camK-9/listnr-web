@@ -1,20 +1,22 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Box, Stack, Typography, Avatar, Rating, Divider, TextField, IconButton, Menu, MenuItem, Button, useMediaQuery } from '@mui/material';
+import { Stack, Typography, Avatar, Rating, Divider, TextField, IconButton, Menu, MenuItem, useMediaQuery } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faComment, faShare, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { reviewService } from '@/lib/reviewService';
 import IReview from '@/interfaces/IReview';
 import ILike from '@/interfaces/ILike';
 import IComment from '@/interfaces/IComment';
 import ICommentLike from '@/interfaces/ICommentLike';
 import theme from '@/theme/theme';
+import { MusicLoader } from '@/components/atoms/MusicLoader';
 
 export default function ReviewPage() {
+    const router = useRouter();
     const { user } = useAuth()
     const params = useParams();
     const id = params.id as string;
@@ -26,7 +28,6 @@ export default function ReviewPage() {
     const [likes, setLikes] = useState<ILike[]>();
     const [comments, setComments] = useState<IComment[]>();
     const [commentText, setCommentText] = useState('');
-    const [showComments, setShowComments] = useState(false);
     const [expandedReplies, setExpandedReplies] = useState<string[]>([]);
     const [replyingToId, setReplyingToId] = useState<string | null>(null);
     const [replyText, setReplyText] = useState('');
@@ -36,14 +37,10 @@ export default function ReviewPage() {
     useEffect(() => {
         if (!id) return;
 
-        console.log(id)
-
         const fetchData = async () => {
             setLoading(true);
             try {
                 const data = await reviewService.getReview(id)
-
-                console.log(data)
 
                 setReview(data)
                 setLikes(data.likes)
@@ -243,8 +240,15 @@ export default function ReviewPage() {
 
     return (
         <Stack position="relative" p="20px" bgcolor="background.paper" borderRadius="20px">
-            {review && likes && comments && <Stack spacing={4}>
-                <Stack spacing={1} direction="row" alignItems="center">
+            {loading ? <MusicLoader /> : review && likes && comments && <Stack spacing={4}>
+                <Stack
+                    spacing={1}
+                    direction="row"
+                    alignItems="center"
+                    width="fit-content"
+                    onClick={() => router.push(`/user/${review.userId}`)}
+                    sx={{ cursor: 'pointer' }}
+                >
                     <Avatar
                         src={review.user.avatarUrl}
                         alt={review.user.username}
@@ -260,7 +264,12 @@ export default function ReviewPage() {
 
                 <Stack spacing={2}>
                     <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
-                        <Typography variant='h2' noWrap>
+                        <Typography
+                            variant='h2'
+                            noWrap
+                            onClick={() => router.push(`/release/${review.release.spotifyId}`)}
+                            sx={{ cursor: 'pointer' }}
+                        >
                             {review.release.title} - {review.release.artist.name}
                         </Typography>
 
@@ -397,6 +406,7 @@ export default function ReviewPage() {
                         placeholder="Écrire un commentaire..."
                         value={commentText}
                         onChange={(e) => setCommentText(e.target.value)}
+                        onKeyDown={(e) => handleKeyDownAddComment(e)}
                         sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
                         slotProps={{
                             input: {
@@ -430,14 +440,19 @@ export default function ReviewPage() {
                                     <Avatar
                                         src={comment.user?.avatarUrl}
                                         alt={comment.user?.username}
-                                        sx={{ width: 30, height: 30, fontWeight: 600, fontSize: '15px' }}
+                                        onClick={() => router.push(`/user/${review.userId}`)}
+                                        sx={{ width: 30, height: 30, fontWeight: 600, fontSize: '15px', cursor: 'pointer' }}
                                     >
                                         {comment.user?.username?.charAt(0).toUpperCase()}
                                     </Avatar>
 
                                     <Stack spacing={1} width="100%">
                                         <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                            <Typography variant='body1'>
+                                            <Typography
+                                                variant='body1'
+                                                onClick={() => router.push(`/user/${review.userId}`)}
+                                                sx={{ cursor: 'pointer' }}
+                                            >
                                                 {comment.user?.username}
                                             </Typography>
 
@@ -487,6 +502,7 @@ export default function ReviewPage() {
                                                     placeholder={`Répondre à ${comment.user?.username}...`}
                                                     value={replyText}
                                                     onChange={(e) => setReplyText(e.target.value)}
+                                                    onKeyDown={(e) => handleKeyDownReplyComment(e, comment.id)}
                                                     sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
                                                     slotProps={{
                                                         input: {
@@ -537,14 +553,25 @@ export default function ReviewPage() {
                                                         <Avatar
                                                             src={reply.user?.avatarUrl}
                                                             alt={reply.user?.username}
-                                                            sx={{ width: 22, height: 22, fontWeight: 600, fontSize: '10px' }}
+                                                            onClick={() => router.push(`/user/${review.userId}`)}
+                                                            sx={{
+                                                                width: 22,
+                                                                height: 22,
+                                                                fontWeight: 600,
+                                                                fontSize: '10px',
+                                                                cursor: 'pointer'
+                                                            }}
                                                         >
                                                             {reply.user?.username?.charAt(0).toUpperCase()}
                                                         </Avatar>
 
                                                         <Stack spacing={0.5} width="100%">
                                                             <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                                                <Typography variant='caption' fontWeight={600}>
+                                                                <Typography
+                                                                    variant='caption'
+                                                                    onClick={() => router.push(`/user/${review.userId}`)}
+                                                                    sx={{ cursor: 'pointer' }}
+                                                                >
                                                                     {reply.user?.username}
                                                                 </Typography>
 

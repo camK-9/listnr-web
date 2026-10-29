@@ -19,6 +19,9 @@ export default function FeedPage() {
     const [usersPopular, setUsersPopular] = useState<IUser[]>([]);
     const [artistsPopular, setArtistsPopular] = useState<IArtist[]>([]);
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(1);
     const [error, setError] = useState<string | null>(null);
 
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -27,7 +30,7 @@ export default function FeedPage() {
         const fetchFeed = async () => {
             try {
                 const [feedData, usersPopularData, artistsPopularData] = await Promise.all([
-                    feedService.getFeedService(),
+                    feedService.getFeedService(1, 10),
                     userService.getPopularUsers(),
                     artistService.getPopularArtists(),
                 ]);
@@ -35,6 +38,10 @@ export default function FeedPage() {
                 setFeed(feedData);
                 setUsersPopular(usersPopularData);
                 setArtistsPopular(artistsPopularData);
+
+                if (feedData.length < 10) {
+                    setHasMore(false);
+                }
             } catch (err: any) {
                 setError(err.response?.data?.message || 'Impossible de charger le fil d’actualité');
             } finally {
@@ -44,6 +51,42 @@ export default function FeedPage() {
 
         fetchFeed();
     }, []);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (
+                window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 300 &&
+                !loadingMore &&
+                hasMore
+            ) {
+                loadMoreFeed();
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [loadingMore, hasMore, page]);
+
+    const loadMoreFeed = async () => {
+        if (loadingMore || !hasMore) return;
+
+        try {
+            setLoadingMore(true);
+            const nextPage = page + 1;
+            const moreFeedData = await feedService.getFeedService(nextPage, 10);
+
+            if (moreFeedData.length < 10) {
+                setHasMore(false);
+            }
+
+            setFeed((prevFeed) => [...prevFeed, ...moreFeedData]);
+            setPage(nextPage);
+        } catch (err) {
+            console.error("Erreur lors du chargement de la suite du feed", err);
+        } finally {
+            setLoadingMore(false);
+        }
+    };
 
     return (
         <Stack spacing={4}>

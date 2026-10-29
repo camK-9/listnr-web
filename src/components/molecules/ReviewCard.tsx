@@ -8,9 +8,11 @@ import { reviewService } from '@/lib/reviewService';
 import { useAuth } from '@/context/AuthContext';
 import IComment from '@/interfaces/IComment';
 import ICommentLike from '@/interfaces/ICommentLike';
+import { useRouter } from 'next/navigation';
 
 export const ReviewCard = (item: IReview) => {
-    const { user } = useAuth()
+    const { user } = useAuth();
+    const router = useRouter();
 
     const [likes, setLikes] = useState(item.likes || []);
     const [comments, setComments] = useState(item.comments || []);
@@ -195,8 +197,6 @@ export const ReviewCard = (item: IReview) => {
 
     const isLiked = user ? likes.some((like) => like.userId === user.id) : false;
 
-    console.log(item.id)
-
     return (
         <Stack
             spacing={2}
@@ -204,9 +204,15 @@ export const ReviewCard = (item: IReview) => {
             p="20px"
             bgcolor="background.paper"
             borderRadius="15px"
-            sx={{ cursor: 'pointer' }}
         >
-            <Stack spacing={1} direction="row" alignItems="center">
+            <Stack
+                spacing={1}
+                direction="row"
+                alignItems="center"
+                width="fit-content"
+                onClick={() => router.push(`/user/${item.userId}`)}
+                sx={{ cursor: 'pointer' }}
+            >
                 <Avatar
                     src={item.user.avatarUrl}
                     alt={item.user.username}
@@ -220,7 +226,14 @@ export const ReviewCard = (item: IReview) => {
                 </Typography>
             </Stack>
 
-            <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
+            <Stack
+                spacing={1}
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                onClick={() => router.push(`/release/${item.release.spotifyId}`)}
+                sx={{ cursor: 'pointer' }}
+            >
                 <Typography variant='body1' noWrap>
                     {item.release.title} - {item.release.artist.name}
                 </Typography>
@@ -238,7 +251,7 @@ export const ReviewCard = (item: IReview) => {
                 sx={{ color: 'primary.main' }}
             />
 
-            <Stack spacing={1} direction="row">
+            <Stack spacing={1} direction="row" onClick={() => router.push(`/review/${item.id}`)} sx={{ cursor: 'pointer' }}>
                 {item.release.imageUrl &&
                     <Image src={item.release.imageUrl} alt={item.release.title} width={100} height={100} />
                 }
@@ -283,6 +296,7 @@ export const ReviewCard = (item: IReview) => {
                     alignItems="center"
                     sx={{
                         color: showComments ? 'secondary.main' : 'text.secondary',
+                        cursor: 'pointer',
                         transition: 'transform 0.2s ease, background-color 0.2s ease',
                         '&:hover': {
                             color: 'secondary.main',
@@ -305,6 +319,7 @@ export const ReviewCard = (item: IReview) => {
                     onClick={handleOpenShare}
                     sx={{
                         color: 'text.secondary',
+                        cursor: 'pointer',
                         transition: 'transform 0.2s ease, background-color 0.2s ease',
                         '&:hover': {
                             color: 'text.primary',

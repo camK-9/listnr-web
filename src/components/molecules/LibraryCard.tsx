@@ -4,6 +4,7 @@ import { faChevronRight, faCircleCheck, faCircleXmark, faForward, faPlay } from 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { IconButton, Stack, Typography } from "@mui/material"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHistory }:
     {
@@ -14,6 +15,7 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
+    const router = useRouter();
 
     const remainingAlbumTracks = queue.filter(
         (q) => (q.release.albumId || q.release.spotifyId) === (item.release.albumId || item.release.spotifyId)
@@ -26,7 +28,6 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
             bgcolor="background.paper"
             position="relative"
             sx={{
-                cursor: 'pointer',
                 opacity: type === 'queue' ? '100%' : '20%',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
                 '&:hover': {
@@ -35,7 +36,7 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                 },
             }}
         >
-            <Stack position="relative">
+            <Stack position="relative" sx={{ cursor: 'pointer' }}>
                 {item.release.imageUrl &&
                     <Stack
                         position="relative"
@@ -43,6 +44,10 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                         left={0}
                         borderRadius="10px 10px 0 0"
                         sx={{ objectFit: 'cover' }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(item.release.spotifyUrl, '_blank', 'noopener,noreferrer');
+                        }}
                     >
                         <Image src={item.release.imageUrl} alt={item.release.title} width={130} height={130} />
                     </Stack>
@@ -80,6 +85,9 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                         borderColor="text.primary"
                         borderRadius="30px"
                         p="5px"
+                        onClick={() => router.push(`/release/${item.release.album ?
+                            item.release.album.spotifyId : item.release.spotifyId}`)}
+                        sx={{ cursor: 'pointer' }}
                     >
                         {item.release.album ? <Typography variant="body2" noWrap>
                             {item.release.album.title}
@@ -102,7 +110,12 @@ export const LibraryCard = ({ type, time, item, queue, onToggleQueue, onToggleHi
                             </Typography>}
                         </Stack>
 
-                        <Typography variant="body2" noWrap>
+                        <Typography
+                            variant="body2"
+                            noWrap
+                            onClick={() => router.push(`/artist/${item.release.artist.spotifyId}`)}
+                            sx={{ cursor: 'pointer' }}
+                        >
                             {item.release.artist.name}
                         </Typography>
                     </Stack>

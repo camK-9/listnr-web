@@ -1,27 +1,48 @@
 'use client';
 
-import { Alert, Stack } from '@mui/material';
-import { ReleaseGrid } from '@/components/organisms/ReleaseGrid';
+import { Alert, Button, Stack, Typography } from '@mui/material';
 import { releaseService } from '@/lib/releaseService';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import IRelease from '@/interfaces/IRelease';
 import IReview from '@/interfaces/IReview'
 import { reviewService } from '@/lib/reviewService';
-import { PopularReviewGrid } from '@/components/organisms/PopularReviewGrid';
-import { FeedGrid } from '@/components/organisms/FeedGrid';
 import { feedService } from '@/lib/feedService';
 import { libraryService } from '@/lib/libraryService';
 import ILibrary from '@/interfaces/ILibrary';
-import { QueueGrid } from '@/components/organisms/QueueGrid';
 import { MusicLoader } from '@/components/atoms/MusicLoader';
+import { NewReleaseCard } from '@/components/molecules/NewReleaseCard';
+import { PopularReviewCard } from '@/components/molecules/PopularReviewCard';
+import { ReviewCard } from '@/components/molecules/ReviewCard';
+import { QueueCard } from '@/components/molecules/QueueCard';
+import { EmptyQueue } from '@/components/molecules/EmptyQueue';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [newReleases, setNewReleases] = useState<IRelease[]>([]);
   const [popularReviews, setPopularReviews] = useState<IReview[]>([]);
   const [feed, setFeed] = useState<IReview[]>([]);
   const [queue, setQueue] = useState<ILibrary[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container || isHovered) return;
+
+    const interval = setInterval(() => {
+      if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
+        container.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        container.scrollBy({ left: 170, behavior: 'smooth' });
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,6 +100,20 @@ export default function HomePage() {
     }
   };
 
+  const displayQueue = queue.reduce<ILibrary[]>((acc, current) => {
+    const albumId = current.release.albumId || current.release.spotifyId;
+
+    const alreadyInDisplay = acc.some(
+      (item) => (item.release.albumId || item.release.spotifyId) === albumId
+    );
+
+    if (!alreadyInDisplay) {
+      acc.push(current);
+    }
+
+    return acc;
+  }, []);
+
   return (
     <Stack spacing={4}>
       {error && (
@@ -88,29 +123,132 @@ export default function HomePage() {
       )}
 
       {loading ? <MusicLoader /> : <Stack spacing={4}>
-        <ReleaseGrid
-          title="Sorties récentes"
-          items={newReleases}
-          onToggleQueue={handleToggleQueue}
-          onToggleHistory={handleToggleHistory}
-        />
+        <Stack spacing={2}>
+          <Typography variant="body1" borderBottom="1px solid">
+            Sorties récentes
+          </Typography>
 
-        <PopularReviewGrid
-          title="Populaire cette semaine"
-          items={popularReviews}
-        />
+          <Stack
+            direction="row"
+            gap={2}
+            ref={scrollRef}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            sx={{
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            }}
+          >
+            {newReleases.map((item: IRelease) => (
+              <Stack key={item.spotifyId} width="170px" minWidth="170px" maxWidth="170px">
+                <NewReleaseCard
+                  item={item}
+                  onToggleQueue={handleToggleQueue}
+                  onToggleHistory={handleToggleHistory}
+                />
+              </Stack>
+            ))}
+          </Stack>
+        </Stack>
 
-        <FeedGrid
-          title="Sur le feed"
-          items={feed}
-        />
+        <Stack spacing={2}>
+          <Typography variant="body1" borderBottom="1px solid">
+            Populaire cette semaine
+          </Typography>
 
-        <QueueGrid
-          title="Dans ton radar"
-          items={queue}
-          onToggleQueue={handleToggleQueue}
-          onToggleHistory={handleToggleHistory}
-        />
+          <Stack
+            direction="row"
+            gap={2}
+            ref={scrollRef}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            sx={{
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            }}
+          >
+            {popularReviews.slice(0, 10).map((item: IReview) => (
+              <Stack key={item.id} width="170px" minWidth="170px" maxWidth="170px">
+                <PopularReviewCard {...item} />
+              </Stack>
+            ))}
+          </Stack>
+        </Stack>
+
+        <Stack spacing={2}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" borderBottom="1px solid">
+            <Typography variant="body1">
+              Sur le feed
+            </Typography>
+
+            <Button variant="text" onClick={() => router.push('/feed')} sx={{ color: "text.secondary" }}>
+              voir tout
+            </Button>
+          </Stack>
+
+          <Stack
+            direction="row"
+            gap={2}
+            ref={scrollRef}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            sx={{
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            }}
+          >
+            {feed.slice(0, 10).map((item: IReview) => (
+              <Stack key={item.id} width="300px" minWidth="300px" maxWidth="300px">
+                <ReviewCard {...item} />
+              </Stack>
+            ))}
+          </Stack>
+        </Stack>
+
+        <Stack spacing={2}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" borderBottom="1px solid">
+            <Typography variant="body1">
+              Dans ton radar
+            </Typography>
+
+            <Button variant="text" onClick={() => router.push('/library')} sx={{ color: "text.secondary" }}>
+              voir tout
+            </Button>
+          </Stack>
+
+          {displayQueue.length > 0 ? <Stack
+            direction="row"
+            gap={2}
+            ref={scrollRef}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            sx={{
+              overflowX: 'auto',
+              scrollBehavior: 'smooth',
+              scrollbarWidth: 'none',
+              '&::-webkit-scrollbar': { display: 'none' },
+            }}
+          >
+            {displayQueue.map((item: ILibrary) => (
+              <Stack key={item.releaseId} width="170px" minWidth="170px" maxWidth="170px">
+                <QueueCard
+                  item={item}
+                  queue={queue}
+                  onToggleQueue={handleToggleQueue}
+                  onToggleHistory={handleToggleHistory}
+                />
+              </Stack>
+            ))}
+          </Stack> :
+            <EmptyQueue />
+          }
+        </Stack>
       </Stack>}
     </Stack>
   );

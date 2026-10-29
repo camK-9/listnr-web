@@ -3,13 +3,15 @@ import { Card, CardMedia, CardContent, Typography, IconButton, Stack, Rating } f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import IReview from '@/interfaces/IReview';
+import { useRouter } from 'next/navigation';
 
 export const PopularReviewCard = (item: IReview) => {
+    const router = useRouter();
+
     return (
         <Card
             sx={{
                 position: 'relative',
-                cursor: 'pointer',
                 bgcolor: 'background.paper',
                 borderRadius: '15px',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
@@ -19,11 +21,15 @@ export const PopularReviewCard = (item: IReview) => {
                 },
             }}
         >
-            <Stack position="relative" pt="100%">
+            <Stack position="relative" pt="100%" sx={{ cursor: 'pointer' }}>
                 <CardMedia
                     component="img"
                     image={item.release.imageUrl}
                     alt={item.release.title}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(item.release.spotifyUrl, '_blank', 'noopener,noreferrer');
+                    }}
                     sx={{
                         position: 'absolute',
                         top: 0,
@@ -58,7 +64,13 @@ export const PopularReviewCard = (item: IReview) => {
 
             <CardContent>
                 <Stack spacing={1}>
-                    <Typography variant="caption" noWrap fontWeight={700}>
+                    <Typography
+                        variant="caption"
+                        noWrap
+                        fontWeight={700}
+                        onClick={() => router.push(`/review/${item.id}`)}
+                        sx={{ cursor: 'pointer' }}
+                    >
                         {item.user.username}
                     </Typography>
 

@@ -1,16 +1,9 @@
-import IArtist from '@/interfaces/IArtist';
 import IRelease from '@/interfaces/IRelease';
-import IUser from '@/interfaces/IUser';
-import { artistService } from '@/lib/artistService';
-import { libraryService } from '@/lib/libraryService';
-import { releaseService } from '@/lib/releaseService';
-import { userService } from '@/lib/userService';
-import { faCircleCheck, faCircleMinus, faCirclePlus, faCircleXmark, faPlay, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faCircleMinus, faCirclePlus, faCircleXmark, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Avatar, IconButton, Stack, Tooltip, Typography, Zoom } from '@mui/material';
+import { IconButton, Stack, Tooltip, Typography, Zoom } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 
 export const ReleaseCard = ({ release, onToggleQueue, onToggleHistory }:
     {
@@ -48,13 +41,17 @@ export const ReleaseCard = ({ release, onToggleQueue, onToggleHistory }:
                 },
             }}
         >
-            <Stack position="relative">
+            <Stack position="relative" sx={{ cursor: 'pointer' }}>
                 {release.imageUrl &&
                     <Image
                         src={release.imageUrl}
                         alt={release.title}
                         width={100}
                         height={100}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(release.spotifyUrl, '_blank', 'noopener,noreferrer');
+                        }}
                         style={{
                             position: 'relative',
                             top: 0,
@@ -87,13 +84,8 @@ export const ReleaseCard = ({ release, onToggleQueue, onToggleHistory }:
                 </IconButton>
             </Stack>
 
-            <Stack
-                direction="row"
-                justifyContent="space-between"
-                width="100%"
-                onClick={() => router.push(`/release/${release.spotifyId}`)}
-            >
-                <Stack spacing={2}>
+            <Stack direction="row" justifyContent="space-between" width="100%">
+                <Stack spacing={2} onClick={() => router.push(`/release/${release.spotifyId}`)} sx={{ cursor: 'pointer' }}>
                     <Typography variant='body2'>
                         {release.title}
                     </Typography>

@@ -8,7 +8,7 @@ import { artistService } from "@/lib/artistService";
 import { libraryService } from "@/lib/libraryService";
 import { releaseService } from "@/lib/releaseService";
 import { Avatar, Button, Stack, Tab, Tabs, Typography } from "@mui/material";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ReleasePage() {
@@ -32,8 +32,6 @@ export default function ReleasePage() {
                     artistService.getProfile(id),
                     releaseService.getArtistRelases(id)
                 ])
-
-                console.log(releasesData)
 
                 setArtist(artistData);
                 setIsFollowing(artistData.isFollowing)
@@ -64,6 +62,14 @@ export default function ReleasePage() {
     const handleToggleQueue = async (releaseItem: IRelease) => {
         try {
             await libraryService.toggleQueue(releaseItem.spotifyId);
+
+            setReleases((prevReleases) =>
+                prevReleases.map((release) =>
+                    release.spotifyId === releaseItem.spotifyId
+                        ? { ...release, isInQueue: !release.isInQueue }
+                        : release
+                )
+            );
         } catch (err) {
             console.error('Erreur lors de la mise à jour de la queue', err);
         }
@@ -72,6 +78,14 @@ export default function ReleasePage() {
     const handleToggleHistory = async (releaseItem: IRelease) => {
         try {
             await libraryService.toggleHistory(releaseItem.spotifyId);
+
+            setReleases((prevReleases) =>
+                prevReleases.map((release) =>
+                    release.spotifyId === releaseItem.spotifyId
+                        ? { ...release, isInHistory: !release.isInHistory, isInQueue: release.isInHistory }
+                        : release
+                )
+            );
         } catch (err) {
             console.error("Erreur lors de la mise à jour de l'historique :", err);
         }

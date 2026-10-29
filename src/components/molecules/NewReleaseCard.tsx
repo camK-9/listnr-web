@@ -2,6 +2,7 @@ import { Card, CardMedia, CardContent, Typography, IconButton, Stack, CardAction
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import IRelease from '@/interfaces/IRelease';
+import { useRouter } from 'next/navigation';
 
 export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
     {
@@ -9,12 +10,12 @@ export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
+    const router = useRouter();
 
     return (
         <Card
             sx={{
                 position: 'relative',
-                cursor: 'pointer',
                 bgcolor: 'background.paper',
                 borderRadius: '15px',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
@@ -24,11 +25,15 @@ export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
                 },
             }}
         >
-            <Stack position="relative" pt="100%">
+            <Stack position="relative" pt="100%" sx={{ cursor: 'pointer' }}>
                 <CardMedia
                     component="img"
                     image={item.imageUrl}
                     alt={item.title}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(item.spotifyUrl, '_blank', 'noopener,noreferrer');
+                    }}
                     sx={{
                         position: 'absolute',
                         top: 0,
@@ -62,7 +67,7 @@ export const NewReleaseCard = ({ item, onToggleQueue, onToggleHistory }:
             </Stack>
 
             <CardContent>
-                <Stack>
+                <Stack onClick={() => router.push(`/release/${item.spotifyId}`)} sx={{ cursor: 'pointer' }}>
                     <Typography variant="caption" noWrap fontWeight={700}>
                         {item.title}
                     </Typography>

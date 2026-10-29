@@ -7,7 +7,7 @@ import IRelease from '@/interfaces/IRelease';
 import Image from 'next/image';
 import { faChevronDown, faCircleCheck, faCircleXmark, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { libraryService } from '@/lib/libraryService';
 import { ReviewCard } from '@/components/molecules/ReviewCard';
 import theme from '@/theme/theme';
@@ -17,6 +17,7 @@ import IReview from '@/interfaces/IReview';
 import { MusicLoader } from '@/components/atoms/MusicLoader';
 
 export default function ReleasePage() {
+    const router = useRouter();
     const params = useParams();
     const id = params.id as string;
 
@@ -191,6 +192,7 @@ export default function ReleasePage() {
                         <Stack
                             position="relative"
                             sx={{
+                                cursor: 'pointer',
                                 transition: 'transform 0.2s ease, background-color 0.2s ease',
                                 '&:hover': {
                                     transform: 'translateY(-4px)',
@@ -205,6 +207,10 @@ export default function ReleasePage() {
                                     left={0}
                                     borderRadius="10px 10px 0 0"
                                     sx={{ objectFit: 'cover' }}
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        window.open(release.spotifyUrl, '_blank', 'noopener,noreferrer');
+                                    }}
                                 >
                                     <Image src={release.imageUrl} alt={release.title} width={175} height={175} />
                                 </Stack>
@@ -238,7 +244,11 @@ export default function ReleasePage() {
                                     {release.title}
                                 </Typography>
 
-                                <Typography variant='body2'>
+                                <Typography
+                                    variant='body2'
+                                    onClick={() => router.push(`/artist/${release.artist.spotifyId}`)}
+                                    sx={{ cursor: 'pointer' }}
+                                >
                                     {release.artist.name}
                                 </Typography>
 
@@ -356,9 +366,14 @@ export default function ReleasePage() {
                                             borderColor="text.secondary"
                                         >
                                             <Stack spacing={1}>
-                                                <Typography variant="caption">
+                                                <Typography
+                                                    variant="caption"
+                                                    onClick={() => router.push(`/release/${track.spotifyId}`)}
+                                                    sx={{ cursor: 'pointer' }}
+                                                >
                                                     {track.trackNumber}. {track.title}
                                                 </Typography>
+
                                                 {track.durationMs && <Typography variant="caption" color='text.secondary'>
                                                     {formatDuration(track.durationMs)}
                                                 </Typography>}

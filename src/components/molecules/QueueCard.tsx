@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import ILibrary from '@/interfaces/ILibrary';
 import IRelease from '@/interfaces/IRelease';
+import { useRouter } from 'next/navigation';
 
 export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
     {
@@ -11,6 +12,7 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease) => void
     }) => {
+    const router = useRouter();
 
     const remainingAlbumTracks = queue.filter(
         (q) => (q.release.albumId || q.release.spotifyId) === (item.release.albumId || item.release.spotifyId)
@@ -20,7 +22,6 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
         <Card
             sx={{
                 position: 'relative',
-                cursor: 'pointer',
                 bgcolor: 'background.paper',
                 borderRadius: '15px',
                 transition: 'transform 0.2s ease, background-color 0.2s ease',
@@ -30,11 +31,15 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
                 },
             }}
         >
-            <Stack position="relative" pt="100%">
+            <Stack position="relative" pt="100%" sx={{ cursor: 'pointer' }}>
                 <CardMedia
                     component="img"
                     image={item.release.imageUrl}
                     alt={item.release.title}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(item.release.spotifyUrl, '_blank', 'noopener,noreferrer');
+                    }}
                     sx={{
                         position: 'absolute',
                         top: 0,
@@ -68,7 +73,7 @@ export const QueueCard = ({ item, queue, onToggleQueue, onToggleHistory }:
             </Stack>
 
             <CardContent>
-                <Stack>
+                <Stack onClick={() => router.push(`/release/${item.release.spotifyId}`)} sx={{ cursor: 'pointer' }}>
                     <Stack spacing={1} direction="row" alignItems="center">
                         <Typography variant='caption' noWrap fontWeight="bold">
                             {item.release.title}

@@ -88,8 +88,13 @@ export default function LibraryPage() {
         try {
             await libraryService.toggleQueue(releaseItem.spotifyId);
 
-            const data = await releaseService.search(query);
-            setReleases(data);
+            setReleases((prevReleases) =>
+                prevReleases.map((release) =>
+                    release.spotifyId === releaseItem.spotifyId
+                        ? { ...release, isInQueue: !release.isInQueue }
+                        : release
+                )
+            );
         } catch (err) {
             console.error('Erreur lors de la mise à jour de la queue', err);
         }
@@ -101,8 +106,13 @@ export default function LibraryPage() {
         try {
             await libraryService.toggleHistory(releaseItem.spotifyId);
 
-            const data = await releaseService.search(query);
-            setReleases(data);
+            setReleases((prevReleases) =>
+                prevReleases.map((release) =>
+                    release.spotifyId === releaseItem.spotifyId
+                        ? { ...release, isInHistory: !release.isInHistory, isInQueue: release.isInHistory }
+                        : release
+                )
+            );
         } catch (err) {
             console.error("Erreur lors de la mise à jour de l'historique :", err);
         }
@@ -182,8 +192,8 @@ export default function LibraryPage() {
                 <Tab label="Membres" />
             </Tabs>
 
-            {loading ? <MusicLoader /> : (tab === 0 || tab === 1) &&
-                filteredReleases.map((release) => (
+            {loading ? <MusicLoader /> : <Stack spacing={2}>
+                {(tab === 0 || tab === 1) && filteredReleases.map((release) => (
                     <SearchCard
                         key={release.spotifyId}
                         release={release}
@@ -192,8 +202,7 @@ export default function LibraryPage() {
                     />
                 ))}
 
-            {tab === 2 &&
-                artists.map((artist) => (
+                {tab === 2 && artists.map((artist) => (
                     <SearchCard
                         key={artist.spotifyId}
                         artist={artist}
@@ -202,8 +211,7 @@ export default function LibraryPage() {
                     />
                 ))}
 
-            {tab === 3 &&
-                users.map((user) => (
+                {tab === 3 && users.map((user) => (
                     <SearchCard
                         key={user.id}
                         user={user}
@@ -211,6 +219,7 @@ export default function LibraryPage() {
                         onToggleHistory={handleToggleHistory}
                     />
                 ))}
+            </Stack>}
         </Stack>
     )
 }
