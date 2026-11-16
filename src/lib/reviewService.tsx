@@ -37,6 +37,11 @@ export const reviewService = {
         return response.data
     },
 
+    getComments: async (reviewId: string, page = 1, limit = 10) => {
+        const response = await api.get(endpoints.REVIEWS.COMMENTS(reviewId));
+        return response.data
+    },
+
     toggleCommentLike: async (commentId: string) => {
         const response = await api.post(endpoints.REVIEWS.LIKE_COMMENT(commentId));
         return response.data
@@ -46,6 +51,11 @@ export const reviewService = {
         const response = await api.post(endpoints.REVIEWS.REPLY_COMMENT(reviewId, commentId), {
             content
         });
+        return response.data
+    },
+
+    getReplies: async (commentId: string, page = 1, limit = 10) => {
+        const response = await api.get(endpoints.REVIEWS.REPLY_COMMENTS(commentId));
         return response.data
     },
 };

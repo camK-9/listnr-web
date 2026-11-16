@@ -30,7 +30,7 @@ export default function FeedPage() {
         const fetchFeed = async () => {
             try {
                 const [feedData, usersPopularData, artistsPopularData] = await Promise.all([
-                    feedService.getFeedService(1, 10),
+                    feedService.getFeed(1, 10),
                     userService.getPopularUsers(),
                     artistService.getPopularArtists(),
                 ]);
@@ -73,7 +73,7 @@ export default function FeedPage() {
         try {
             setLoadingMore(true);
             const nextPage = page + 1;
-            const moreFeedData = await feedService.getFeedService(nextPage, 10);
+            const moreFeedData = await feedService.getFeed(nextPage, 10);
 
             if (moreFeedData.length < 10) {
                 setHasMore(false);

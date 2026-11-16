@@ -14,4 +14,7 @@ export default interface Comment {
     parent?: Comment,
     replies?: Comment[],
     likes: ICommentLike[]
+    _count: {
+        replies: number
+    }
 }

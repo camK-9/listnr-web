@@ -30,9 +30,11 @@ export const endpoints = {
     CREATE: (id: string) => `/reviews/${id}`,
     RELEASE: (id: string) => `/reviews/release/${id}`,
     LIKE: (id: string) => `/reviews/${id}/like`,
-    COMMENT: (id: string) => `/reviews/${id}/comments`,
+    COMMENT: (id: string) => `/reviews/${id}/comment`,
+    COMMENTS: (id: string) => `/reviews/${id}/comments`,
     LIKE_COMMENT: (id: string) => `/reviews/comments/${id}/like`,
     REPLY_COMMENT: (id: string, idComment: string) => `/reviews/${id}/comments/${idComment}/reply`,
+    REPLY_COMMENTS: (idComment: string) => `/reviews/comments/${idComment}/replies`,
     POPULAR: '/reviews/popular',
   },
   LIBRARY: {

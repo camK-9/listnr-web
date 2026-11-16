@@ -50,7 +50,7 @@ export default function HomePage() {
         const [releasesData, reviewsData, feedData, queueData] = await Promise.all([
           releaseService.getNewReleases(),
           reviewService.getPopularReviews(),
-          feedService.getFeedService(),
+          feedService.getFeed(),
           libraryService.getQueue(1, 50),
         ]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Button, Divider, IconButton, Menu, MenuItem, Rating, Stack, TextField, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComment, faHeart, faPaperPlane, faShare } from '@fortawesome/free-solid-svg-icons';
@@ -15,7 +15,11 @@ export const ReviewCard = (item: IReview) => {
     const router = useRouter();
 
     const [likes, setLikes] = useState(item.likes || []);
-    const [comments, setComments] = useState(item.comments || []);
+    const [comments, setComments] = useState<IComment[]>([]);
+    const [totalComments, setTotalComments] = useState(0);
+    const [commentPage, setCommentPage] = useState(1);
+    const [hasMoreComments, setHasMoreComments] = useState(true);
+    const [replies, setReplies] = useState<{ [commentId: string]: { replies: IComment[], page: number, hasMore: boolean } }>({});
     const [commentText, setCommentText] = useState('');
     const [showComments, setShowComments] = useState(false);
     const [expandedReplies, setExpandedReplies] = useState<string[]>([]);
@@ -23,6 +27,19 @@ export const ReviewCard = (item: IReview) => {
     const [replyText, setReplyText] = useState('');
     const [shareAnchorEl, setShareAnchorEl] = useState<null | HTMLElement>(null);
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const data = await reviewService.getComments(item.id, 1, 10);
+
+            setComments(data.comments);
+            setTotalComments(data.totalCount);
+            setHasMoreComments(data.hasMore);
+            setCommentPage(1);
+        }
+
+        fetchData()
+    }, [item])
 
     const handleToggleLike = async () => {
         try {
@@ -89,6 +106,13 @@ export const ReviewCard = (item: IReview) => {
         }
     };
 
+    const handleKeyDownAddComment = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleAddComment(e);
+        }
+    };
+
     const handleReplyComment = async (e: React.FormEvent, commentId: string) => {
         e.preventDefault();
         if (!replyText.trim() || !user) return;
@@ -104,13 +128,6 @@ export const ReviewCard = (item: IReview) => {
         }
     };
 
-    const handleKeyDownAddComment = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            handleAddComment(e);
-        }
-    };
-
     const handleKeyDownReplyComment = (e: React.KeyboardEvent<HTMLDivElement>, commentId: string) => {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
@@ -118,11 +135,54 @@ export const ReviewCard = (item: IReview) => {
         }
     };
 
-    const toggleReplies = (commentId: string) => {
-        if (expandedReplies.includes(commentId)) {
-            setExpandedReplies(expandedReplies.filter(id => id !== commentId));
+    const handleLoadMoreComments = async () => {
+        if (!hasMoreComments) return;
+
+        try {
+            const nextPage = commentPage + 1;
+            const commentsData = await reviewService.getComments(item.id, nextPage, 10);
+
+            setComments((prev) => [...prev, ...commentsData.comments]);
+            setHasMoreComments(commentsData.hasMore);
+            setCommentPage(nextPage);
+        } catch (error) {
+            console.error("Erreur lors du chargement de plus de commentaires :", error);
+        }
+    };
+
+    const handleToggleReplies = async (commentId: string) => {
+        const isCurrentlyExpanded = expandedReplies.includes(commentId);
+
+        if (isCurrentlyExpanded) {
+            setExpandedReplies(expandedReplies.filter(itemId => itemId !== commentId));
         } else {
             setExpandedReplies([...expandedReplies, commentId]);
+
+            if (!replies[commentId]) {
+                await fetchReplies(commentId, 1);
+            }
+        }
+    };
+
+    const fetchReplies = async (commentId: string, page: number) => {
+        try {
+            const data = await reviewService.getReplies(commentId, page, 5);
+
+            setReplies(prev => {
+                const existingReplies = prev[commentId]?.replies || [];
+                const newReplies = page === 1 ? data.replies : [...existingReplies, ...data.replies];
+
+                return {
+                    ...prev,
+                    [commentId]: {
+                        replies: newReplies,
+                        page: page,
+                        hasMore: data.hasMore
+                    }
+                };
+            });
+        } catch (error) {
+            console.error("Erreur lors de la récupération des réponses :", error);
         }
     };
 
@@ -308,7 +368,7 @@ export const ReviewCard = (item: IReview) => {
                     <FontAwesomeIcon icon={faComment} />
 
                     <Typography variant='caption' width="50px">
-                        {formatCount(comments.length)}
+                        {formatCount(totalComments)}
                     </Typography>
                 </Stack>
 
@@ -459,43 +519,41 @@ export const ReviewCard = (item: IReview) => {
                                     </Typography>
                                 </Stack>
 
-                                {replyingToId === comment.id && user && (
-                                    <Stack direction="row" spacing={1}>
-                                        <TextField
-                                            fullWidth
-                                            size="small"
-                                            placeholder={`Répondre à ${comment.user?.username}...`}
-                                            value={replyText}
-                                            onChange={(e) => setReplyText(e.target.value)}
-                                            onKeyDown={(e) => handleKeyDownReplyComment(e, comment.id)}
-                                            sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
-                                            slotProps={{
-                                                input: {
-                                                    endAdornment: (
-                                                        <IconButton
-                                                            color="primary"
-                                                            disabled={!replyText.trim()}
-                                                            onClick={(e) => handleReplyComment(e, comment.id)}
-                                                            sx={{
-                                                                width: '30px',
-                                                                height: '30px',
-                                                            }}
-                                                        >
-                                                            <FontAwesomeIcon
-                                                                icon={faPaperPlane}
-                                                                style={{ width: '15px', height: '15px' }}
-                                                            />
-                                                        </IconButton>
-                                                    ),
-                                                }
-                                            }}
-                                        />
-                                    </Stack>
-                                )}
+                                {replyingToId === comment.id && user && <Stack direction="row" spacing={1}>
+                                    <TextField
+                                        fullWidth
+                                        size="small"
+                                        placeholder={`Répondre à ${comment.user?.username}...`}
+                                        value={replyText}
+                                        onChange={(e) => setReplyText(e.target.value)}
+                                        onKeyDown={(e) => handleKeyDownReplyComment(e, comment.id)}
+                                        sx={{ '& .MuiOutlinedInput-root': { borderRadius: '10px' } }}
+                                        slotProps={{
+                                            input: {
+                                                endAdornment: (
+                                                    <IconButton
+                                                        color="primary"
+                                                        disabled={!replyText.trim()}
+                                                        onClick={(e) => handleReplyComment(e, comment.id)}
+                                                        sx={{
+                                                            width: '30px',
+                                                            height: '30px',
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon
+                                                            icon={faPaperPlane}
+                                                            style={{ width: '15px', height: '15px' }}
+                                                        />
+                                                    </IconButton>
+                                                ),
+                                            }
+                                        }}
+                                    />
+                                </Stack>}
 
-                                {comments.filter((c: IComment) => c.parentId === comment.id).length > 0 && <Typography
+                                {comment._count.replies > 0 && <Typography
                                     variant='caption'
-                                    onClick={() => toggleReplies(comment.id)}
+                                    onClick={() => handleToggleReplies(comment.id)}
                                     sx={{
                                         cursor: 'pointer',
                                         color: 'text.secondary',
@@ -504,64 +562,62 @@ export const ReviewCard = (item: IReview) => {
                                 >
                                     {expandedReplies.includes(comment.id)
                                         ? "Masquer les réponses"
-                                        : `Voir ${comments.filter((c: IComment) => c.parentId === comment.id).length}
-                                        réponse${comments.filter((c: IComment) => c.parentId === comment.id).length > 1 ? 's' : ''}`}
+                                        : `Voir ${comment._count.replies} réponse(s)`}
                                 </Typography>
                                 }
 
-                                {expandedReplies.includes(comment.id) &&
-                                    comments.filter((c: IComment) => c.parentId === comment.id).length > 0 && <Stack
+                                {expandedReplies.includes(comment.id) && <Stack
+                                    spacing={1}
+                                    borderLeft="2px solid"
+                                    borderColor="text.secondary"
+                                >
+                                    {replies[comment.id]?.replies.map((reply) => <Stack
+                                        key={reply.id}
+                                        direction="row"
                                         spacing={1}
-                                        borderLeft="2px solid"
-                                        borderColor="text.secondary"
+                                        p="10px"
                                     >
-                                        {comments.filter((c: IComment) => c.parentId === comment.id).map((reply: IComment) => <Stack
-                                            key={reply.id}
-                                            direction="row"
-                                            spacing={1}
-                                            p="10px"
+                                        <Avatar
+                                            src={reply.user?.avatarUrl}
+                                            alt={reply.user?.username}
+                                            sx={{ width: 15, height: 15, fontWeight: 600, fontSize: '8px' }}
                                         >
-                                            <Avatar
-                                                src={reply.user?.avatarUrl}
-                                                alt={reply.user?.username}
-                                                sx={{ width: 15, height: 15, fontWeight: 600, fontSize: '8px' }}
-                                            >
-                                                {reply.user?.username?.charAt(0).toUpperCase()}
-                                            </Avatar>
+                                            {reply.user?.username?.charAt(0).toUpperCase()}
+                                        </Avatar>
 
-                                            <Stack spacing={1} width="100%">
-                                                <Stack direction="row" justifyContent="space-between" alignItems="center">
-                                                    <Typography variant='caption' fontWeight={600}>
-                                                        {reply.user?.username}
-                                                    </Typography>
-
-                                                    <Typography variant='caption' color="text.secondary">
-                                                        {formatTimeAgo(reply.createdAt)}
-                                                    </Typography>
-                                                </Stack>
-
-                                                <Typography variant='caption'>
-                                                    {reply.content}
+                                        <Stack spacing={1} width="100%">
+                                            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                                                <Typography variant='caption' fontWeight={600}>
+                                                    {reply.user?.username}
                                                 </Typography>
 
-                                                <Typography
-                                                    variant='caption'
-                                                    onClick={() => handleToggleCommentLike(reply.id)}
-                                                    sx={{
-                                                        cursor: 'pointer',
-                                                        color: user && reply.likes.some((like) => like.userId === user.id) ?
-                                                            'action.hover' : 'text.secondary',
-                                                        fontWeight: 600,
-                                                        fontSize: '10px',
-                                                        '&:hover': { color: 'primary.main' }
-                                                    }}
-                                                >
-                                                    {reply.likes?.length > 0 ? `(${reply.likes.length})` : ''} J'aime
+                                                <Typography variant='caption' color="text.secondary">
+                                                    {formatTimeAgo(reply.createdAt)}
                                                 </Typography>
                                             </Stack>
+
+                                            <Typography variant='caption'>
+                                                {reply.content}
+                                            </Typography>
+
+                                            <Typography
+                                                variant='caption'
+                                                onClick={() => handleToggleCommentLike(reply.id)}
+                                                sx={{
+                                                    cursor: 'pointer',
+                                                    color: user && reply.likes.some((like) => like.userId === user.id) ?
+                                                        'action.hover' : 'text.secondary',
+                                                    fontWeight: 600,
+                                                    fontSize: '10px',
+                                                    '&:hover': { color: 'primary.main' }
+                                                }}
+                                            >
+                                                {reply.likes?.length > 0 ? `(${reply.likes.length})` : ''} J'aime
+                                            </Typography>
                                         </Stack>
-                                        )}
-                                    </Stack>}
+                                    </Stack>
+                                    )}
+                                </Stack>}
                             </Stack>
                         </Stack>
                     ))}
