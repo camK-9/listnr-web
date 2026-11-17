@@ -6,6 +6,8 @@ import ILike from "./ILike";
 import ILibrary from "./ILibrary";
 import INotification from "./INotification";
 import IReview from "./IReview";
+import IRelease from "./IRelease";
+import IArtist from "./IArtist";
 
 export default interface User {
     id: string,
@@ -23,13 +25,20 @@ export default interface User {
     likes: ILike[],
     comments: IComment[],
     commentLikes: ICommentLike[],
+    recentReviews: IReview[],
+    favoriteTracks?: IRelease[],
+    favoriteAlbums?: IRelease[],
+    favoriteArtists?: IArtist[],
     notifications: INotification[],
-    actionsPerformed: INotification[]
+    actionsPerformed: INotification[],
     stats?: {
-        artistsFollowedCount: number
-        followersCount: number
-        followingCount: number
-        releasesListened: number
-        reviewsCount: number
+        releasesListenedCount: number,
+        reviewsCount: number,
+        followersCount: number,
+        followingCount: number,
+        artistsFollowedCount: number,
+        artistsListenedCount: number,
+        albumsListenedCount: number,
+        streakCount: number,
     }
 }

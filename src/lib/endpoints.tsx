@@ -4,11 +4,14 @@ export const endpoints = {
     REGISTER: '/auth/register',
   },
   USERS: {
+    POPULAR: '/users/popular',
     PROFILE: '/users/me',
     USER_PROFILE: (id: string) => `/users/profile/${id}`,
     FOLLOW: (id: string) => `/users/follow/${id}`,
     SEARCH: (query: string) => `/users/search?q=${query}`,
-    POPULAR: '/users/popular',
+    ADD_FAV: '/users/favorites',
+    DELETE_FAV: '/users/favorites',
+    REORDER_FAV: '/users/favorites/reorder',
   },
   ARTISTS: {
     SEARCH: (query: string) => `/artists/search?q=${query}`,

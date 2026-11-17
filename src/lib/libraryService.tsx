@@ -9,9 +9,9 @@ export const libraryService = {
         return response.data;
     },
 
-    getHistory: async (page = 1, limit = 50) => {
+    getHistory: async (page = 1, limit = 50, search?: string) => {
         const response = await api.get(endpoints.LIBRARY.HISTORY, {
-            params: { page, limit },
+            params: { page, limit, search },
         });
         return response.data;
     },

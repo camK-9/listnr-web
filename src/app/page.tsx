@@ -185,7 +185,16 @@ export default function HomePage() {
               Sur le feed
             </Typography>
 
-            <Button variant="text" onClick={() => router.push('/feed')} sx={{ color: "text.secondary" }}>
+            <Button
+              variant="text"
+              onClick={() => router.push('/feed')}
+              sx={{
+                color: 'text.primary',
+                '&:hover': {
+                  bgcolor: 'text.disabled',
+                }
+              }}
+            >
               voir tout
             </Button>
           </Stack>
@@ -217,7 +226,16 @@ export default function HomePage() {
               Dans ton radar
             </Typography>
 
-            <Button variant="text" onClick={() => router.push('/library')} sx={{ color: "text.secondary" }}>
+            <Button
+              variant="text"
+              onClick={() => router.push('/library')}
+              sx={{
+                color: 'text.primary',
+                '&:hover': {
+                  bgcolor: 'text.disabled',
+                }
+              }}
+            >
               voir tout
             </Button>
           </Stack>

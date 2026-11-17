@@ -1,7 +1,7 @@
 import IRelease from "./IRelease";
 import IUser from "./IUser";
 
-export default interface ListenQueue {
+export default interface Library {
     userId: string,
     releaseId: string,
     user: IUser,
