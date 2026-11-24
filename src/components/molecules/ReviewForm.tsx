@@ -6,11 +6,11 @@ import { reviewService } from '@/lib/reviewService';
 import theme from '@/theme/theme';
 import IReview from '@/interfaces/IReview';
 
-export const ReviewForm = ({ releaseId, review }: { releaseId: string, review: IReview }) => {
+export const ReviewForm = ({ releaseId, review }: { releaseId: string, review: IReview | null }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const [rating, setRating] = useState<number | null>(review.rating);
-    const [comment, setComment] = useState(review.comment);
+    const [rating, setRating] = useState<number | null>(review ? review.rating : null);
+    const [comment, setComment] = useState(review ? review.comment : '');
     const [loading, setLoading] = useState(false);
 
     const handleSave = async (newRating: number | null, newComment: string) => {

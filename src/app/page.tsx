@@ -26,23 +26,45 @@ export default function HomePage() {
   const [popularReviews, setPopularReviews] = useState<IReview[]>([]);
   const [feed, setFeed] = useState<IReview[]>([]);
   const [queue, setQueue] = useState<ILibrary[]>([]);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const newReleasesRef = useRef<HTMLDivElement>(null);
+  const popularReviewsRef = useRef<HTMLDivElement>(null);
+  const feedRef = useRef<HTMLDivElement>(null);
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
 
   useEffect(() => {
-    const container = scrollRef.current;
-    if (!container || isHovered) return;
+    if (loading || hoveredSection) return;
 
-    const interval = setInterval(() => {
+    const sections = [
+      { ref: newReleasesRef, delay: 0 },
+      { ref: popularReviewsRef, delay: 750 },
+      { ref: feedRef, delay: 1500 },
+    ];
+
+    const timeouts: ReturnType<typeof setTimeout>[] = [];
+
+    const scrollSection = (ref: React.RefObject<HTMLDivElement | null>) => {
+      const container = ref.current;
+      if (!container || container.scrollWidth <= container.clientWidth) return;
+
       if (container.scrollLeft + container.clientWidth >= container.scrollWidth - 5) {
         container.scrollTo({ left: 0, behavior: 'smooth' });
       } else {
         container.scrollBy({ left: 170, behavior: 'smooth' });
       }
+    };
+
+    const interval = setInterval(() => {
+      sections.forEach(({ ref, delay }) => {
+        const timeout = setTimeout(() => scrollSection(ref), delay);
+        timeouts.push(timeout);
+      });
     }, 3000);
 
-    return () => clearInterval(interval);
-  }, [isHovered]);
+    return () => {
+      clearInterval(interval);
+      timeouts.forEach(clearTimeout);
+    };
+  }, [loading, hoveredSection]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,9 +153,9 @@ export default function HomePage() {
           <Stack
             direction="row"
             gap={2}
-            ref={scrollRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            ref={newReleasesRef}
+            onMouseEnter={() => setHoveredSection('releases')}
+            onMouseLeave={() => setHoveredSection(null)}
             sx={{
               overflowX: 'auto',
               scrollBehavior: 'smooth',
@@ -161,9 +183,9 @@ export default function HomePage() {
           <Stack
             direction="row"
             gap={2}
-            ref={scrollRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            ref={popularReviewsRef}
+            onMouseEnter={() => setHoveredSection('popular')}
+            onMouseLeave={() => setHoveredSection(null)}
             sx={{
               overflowX: 'auto',
               scrollBehavior: 'smooth',
@@ -202,9 +224,9 @@ export default function HomePage() {
           <Stack
             direction="row"
             gap={2}
-            ref={scrollRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            ref={feedRef}
+            onMouseEnter={() => setHoveredSection('feed')}
+            onMouseLeave={() => setHoveredSection(null)}
             sx={{
               overflowX: 'auto',
               scrollBehavior: 'smooth',
@@ -243,9 +265,6 @@ export default function HomePage() {
           {displayQueue.length > 0 ? <Stack
             direction="row"
             gap={2}
-            ref={scrollRef}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
             sx={{
               overflowX: 'auto',
               scrollBehavior: 'smooth',

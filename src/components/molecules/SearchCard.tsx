@@ -140,7 +140,7 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                 </Stack>
 
                 {release ? <Stack direction="row" spacing={1} alignItems="center" flexShrink={0}>
-                    <Tooltip
+                    {!release.isInHistory && <Tooltip
                         title={release.isInQueue ? "Retirer de la file d'attente" : "Ajouter à la file d'attente"}
                         slots={{ transition: Zoom }}
                     >
@@ -158,7 +158,7 @@ export const SearchCard = ({ release, artist, user, onToggleQueue, onToggleHisto
                                 style={{ width: '30px', height: '30px' }}
                             />
                         </IconButton>
-                    </Tooltip>
+                    </Tooltip>}
 
                     <Tooltip
                         title={release.isInHistory ? "Retirer de l'historique" : "Marquer comme écouté"}

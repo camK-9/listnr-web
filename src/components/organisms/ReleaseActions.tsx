@@ -9,7 +9,7 @@ import IReview from '@/interfaces/IReview';
 export const ReleaseActions = ({ release, review, onToggleQueue, onToggleHistory }:
     {
         release: IRelease,
-        review: IReview
+        review: IReview | null,
         onToggleQueue: (release: IRelease) => void,
         onToggleHistory: (release: IRelease, type: string) => void
     }) => {

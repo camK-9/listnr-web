@@ -23,7 +23,7 @@ export default function ReleasePage() {
 
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-    const [review, setReview] = useState<IReview>();
+    const [review, setReview] = useState<IReview | null>(null);
     const [release, setRelease] = useState<IRelease>();
     const [tracks, setTracks] = useState<IRelease[]>([]);
     const [listenedTracks, setListenedTracks] = useState<number>();
@@ -281,7 +281,7 @@ export default function ReleasePage() {
                         </Stack>
                     </Stack>
 
-                    {isMobile && release && review && release.stats && <ReleaseActions
+                    {isMobile && release && release.stats && <ReleaseActions
                         release={release}
                         review={review}
                         onToggleQueue={handleToggleQueue}
@@ -430,7 +430,7 @@ export default function ReleasePage() {
                 </Stack>
             </Stack>}
 
-            {!isMobile && release && review && release.stats && <ReleaseActions
+            {!isMobile && release && release.stats && <ReleaseActions
                 release={release}
                 review={review}
                 onToggleQueue={handleToggleQueue}

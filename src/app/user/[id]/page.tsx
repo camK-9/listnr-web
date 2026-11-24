@@ -64,7 +64,7 @@ export default function UserPage() {
     return (
         <Stack spacing={4} mt="50px">
             {loading ? <MusicLoader /> : profile && profile.stats && <Stack spacing={4} width="100%">
-                <Stack spacing={4} direction="row" justifyContent="space-between" alignItems="flex-start" maxWidth="800px">
+                <Stack spacing={4} direction="row" justifyContent="space-between" alignItems="flex-start">
                     <Stack spacing={4} direction="row" alignItems="center">
                         <Avatar
                             src={profile.avatarUrl}

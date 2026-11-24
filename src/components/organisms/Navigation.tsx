@@ -30,7 +30,7 @@ export const Navigation = () => {
     const DESKTOP_NAV_ITEMS = [
         { label: 'Social feed', path: '/feed', icon: faFeather },
         { label: 'À écouter', path: '/library', icon: faHeadphones },
-        { label: user?.username || 'Profil', path: '/profile', icon: faUser },
+        { label: user?.username || 'Profil', path: `/user/${user?.id}`, icon: faUser },
     ];
 
     const MOBILE_NAV_ITEMS = [
@@ -38,7 +38,7 @@ export const Navigation = () => {
         { label: 'Social feed', path: '/feed', icon: faFeather },
         { label: 'Recherche', path: '/search', icon: faMagnifyingGlass },
         { label: 'À écouter', path: '/library', icon: faHeadphones },
-        { label: user?.username || 'Profil', path: '/profile', icon: faUser },
+        { label: user?.username || 'Profil', path: `/user/${user?.id}`, icon: faUser },
     ];
 
     if (isLoading || hiddenRoutes.includes(pathname)) {
